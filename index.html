@@ -107,6 +107,7 @@
     <button class="tab" data-t="trend">📈 발주 추이</button>
     <button class="tab" data-t="mix">🏷️ 채널·품목</button>
     <button class="tab" data-t="detail">🔍 상세분석</button>
+    <button class="tab" data-t="fx">💱 환율</button>
     <button class="tab" data-t="news">📰 업계 브리핑</button>
   </nav>
   <div class="err" id="err"></div>
@@ -141,6 +142,12 @@
     <div class="panel" style="margin-bottom:0"><h2>요일별 발주 패턴</h2><div class="echart" id="chart-dow" style="height:280px"></div></div>
   </section>
 
+  <section class="tabpanel" id="tab-fx">
+    <div class="kpis" id="fxcards"></div>
+    <div class="panel"><h2>💱 원/달러 환율 추이 <span class="legend">최근 ~5개월 · ECB 시장환율</span></h2><div class="echart" id="chart-fx" style="height:330px"></div></div>
+    <div class="panel" style="margin-bottom:0"><h2>📦 수입 원가 영향</h2><div id="fxnote" style="font-size:13px;color:var(--sub);line-height:1.8">분석 중…</div></div>
+  </section>
+
   <section class="tabpanel" id="tab-news">
     <div class="panel">
       <h2>📰 업계 브리핑 <span class="legend">식품·HACCP·수출 동향 · 자동 업데이트</span></h2>
@@ -165,14 +172,41 @@
   const g = (c1,c2)=> new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:c1},{offset:1,color:c2}]);
   const GB=g('#60a5fa','#2563eb'), GO=g('#fb923c','#ea580c'), GC=g('#38bdf8','#0284c7');
 
-  let ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal,_charts=false;
+  let ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal,ecFx,_charts=false;
   function initCharts(){
     if(_charts) return; _charts=true;
     ecMonth=echarts.init($('chart-month')); ecYoY=echarts.init($('chart-yoy'));
     ecChan=echarts.init($('chart-chan')); ecGrp=echarts.init($('chart-grp'));
     ecProd=echarts.init($('chart-prod')); ecRegion=echarts.init($('chart-region'));
     ecDow=echarts.init($('chart-dow')); ecCal=echarts.init($('chart-cal'));
-    window.addEventListener('resize',()=>{[ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal].forEach(c=>c&&c.resize());});
+    ecFx=echarts.init($('chart-fx'));
+    window.addEventListener('resize',()=>{[ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal,ecFx].forEach(c=>c&&c.resize());});
+  }
+  async function loadFx(){
+    try{
+      const iso=d=>d.toISOString().slice(0,10);
+      const to=new Date(), from=new Date(Date.now()-160*864e5);
+      const j=await (await fetch(`https://api.frankfurter.dev/v1/${iso(from)}..${iso(to)}?base=USD&symbols=KRW,CNY,JPY`)).json();
+      const ds=Object.keys(j.rates).sort(); if(ds.length<2) return;
+      const L=ds[ds.length-1], P=ds[ds.length-2], R=j.rates;
+      const usd=R[L].KRW, usdP=R[P].KRW, cny=R[L].KRW/R[L].CNY, jpy=R[L].KRW/R[L].JPY*100, ch=(usd-usdP)/usdP;
+      const cls=v=>v>=0?'up':'down', sym=v=>v>=0?'▲':'▼';
+      $('fxcards').innerHTML=[
+        ['USD/KRW ($1)', Math.round(usd)+' 원', ch],
+        ['CNY/KRW (¥1)', cny.toFixed(1)+' 원', null],
+        ['JPY/KRW (100엔)', Math.round(jpy)+' 원', null],
+        ['기준일', L, null],
+      ].map(k=>`<div class="kpi"><div class="lab">${k[0]}</div><div class="val">${k[1]}</div>${k[2]!=null?`<div class="delta ${cls(k[2])}">${sym(k[2])} ${(Math.abs(k[2])*100).toFixed(2)}% (전일比)</div>`:''}</div>`).join('');
+      initCharts();
+      ecFx.setOption({grid:{left:58,right:20,top:16,bottom:30},tooltip:{trigger:'axis',formatter:p=>p[0].axisValue+'<br>'+Math.round(p[0].data)+'원'},
+        xAxis:{type:'category',data:ds.map(d=>d.slice(5)),axisLabel:{color:AX,fontSize:9},axisLine:{lineStyle:{color:SPLIT}}},
+        yAxis:{type:'value',scale:true,axisLabel:{color:AX,formatter:'{value}'},splitLine:{lineStyle:{color:SPLIT}}},
+        series:[{type:'line',data:ds.map(d=>R[d].KRW),smooth:true,symbol:'none',lineStyle:{color:'#3b82f6',width:2.5},areaStyle:{color:g('rgba(59,130,246,.28)','rgba(59,130,246,.01)')}}]});
+      $('fxnote').innerHTML = (ch>=0
+        ? `📈 원/달러 <b style="color:#ef4444">상승(원화 약세)</b> → 수입 원물(과일·수산물·캔재료 등) <b>원가 부담 ↑</b>. 환헤지·구매시점 분산 검토.`
+        : `📉 원/달러 <b style="color:#22c55e">하락(원화 강세)</b> → 수입 원가 <b>완화</b>. 원물 선구매·재고 확보 유리 구간.`)
+        + `<br>※ ECB 시장환율 기준. <b>관세청 고시환율</b>(수입신고용)은 별도 — 원하면 주간 고시환율도 수집해 붙여드립니다.`;
+    }catch(e){ if($('fxnote')) $('fxnote').textContent='환율 로드 실패 (네트워크/API)'; }
   }
   function normRegion(r){
     const m={'서울특별시':'서울','서울':'서울','인천광역시':'인천','인천':'인천','부산광역시':'부산','부산':'부산','대구광역시':'대구','대구':'대구','광주광역시':'광주','광주':'광주','대전광역시':'대전','대전':'대전','울산광역시':'울산','울산':'울산','세종특별자치시':'세종','세종':'세종','경기도':'경기','경기':'경기','강원특별자치도':'강원','강원도':'강원','강원':'강원','충청북도':'충북','충북':'충북','충청남도':'충남','충남':'충남','전북특별자치도':'전북','전라북도':'전북','전북':'전북','전라남도':'전남','전남':'전남','경상북도':'경북','경북':'경북','경상남도':'경남','경남':'경남','제주특별자치도':'제주','제주도':'제주','제주':'제주'};
@@ -230,7 +264,7 @@
     document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));
     const id=b.dataset.t;
     document.querySelectorAll('.tabpanel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+id));
-    setTimeout(()=>{ if(id==='trend'){ecMonth&&ecMonth.resize();ecYoY&&ecYoY.resize();} if(id==='mix'){ecChan&&ecChan.resize();ecGrp&&ecGrp.resize();} if(id==='detail'){[ecProd,ecRegion,ecDow,ecCal].forEach(c=>c&&c.resize());} },30);
+    setTimeout(()=>{ if(id==='trend'){ecMonth&&ecMonth.resize();ecYoY&&ecYoY.resize();} if(id==='mix'){ecChan&&ecChan.resize();ecGrp&&ecGrp.resize();} if(id==='detail'){[ecProd,ecRegion,ecDow,ecCal].forEach(c=>c&&c.resize());} if(id==='fx'){ecFx&&ecFx.resize();} },30);
     window.scrollTo({top:0,behavior:'smooth'});
   });
 
@@ -244,7 +278,7 @@
       ]);
       if(sum.error||chan.error||month.error||grp.error) throw (sum.error||chan.error||month.error||grp.error);
       render(sum.data, chan.data, month.data, grp.data);
-      loadNews(); loadDetail();
+      loadNews(); loadDetail(); loadFx();
       $('err').style.display='none';
       $('updated').textContent = '최신 · ' + new Date().toLocaleTimeString('ko-KR');
     }catch(e){ $('err').style.display='block'; $('err').textContent='데이터 로드 오류: '+(e.message||e); }
