@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>정푸드코리아 · 발주 실시간 대시보드</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --bg:#0b1220; --panel:#141c2e; --line:#243149; --ink:#e8eef7; --sub:#8ea0bd;
+    --pri:#3b82f6; --acc:#f97316; --good:#22c55e; --y1:#38bdf8; --y2:#f97316;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f1f5f9; --panel:#ffffff; --line:#e2e8f0; --ink:#0f172a; --sub:#64748b; }
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Malgun Gothic','맑은 고딕',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:18px;max-width:1200px;margin:0 auto}
+  header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+  header h1{font-size:20px;letter-spacing:-.3px}
+  header .sub{font-size:12px;color:var(--sub);margin-top:2px}
+  .live{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--sub)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--good);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .lab{font-size:11px;color:var(--sub);font-weight:700}
+  .kpi .val{font-size:26px;font-weight:800;margin-top:4px;letter-spacing:-.5px}
+  .kpi.acc .val{color:var(--acc)}
+  .grid{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-bottom:14px}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+  .panel h2{font-size:14px;margin-bottom:14px;padding-left:9px;border-left:4px solid var(--pri);display:flex;justify-content:space-between;align-items:center}
+  .legend{font-size:11px;font-weight:400;color:var(--sub);display:flex;gap:12px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+  .cols{display:flex;align-items:flex-end;gap:4px;height:170px}
+  .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .col .bar{width:72%;background:var(--pri);border-radius:3px 3px 0 0;transition:height .5s}
+  .col.peak .bar{background:var(--acc)}
+  .col .m{font-size:8px;color:var(--sub);margin-top:4px;writing-mode:vertical-rl;height:30px}
+  .col .n{font-size:8px;color:var(--sub);margin-bottom:2px}
+  /* YoY grouped columns */
+  .ycols{display:flex;align-items:flex-end;gap:6px;height:200px;padding-top:8px}
+  .ymon{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .ybars{display:flex;align-items:flex-end;justify-content:center;gap:3px;width:100%;height:100%}
+  .ybar{width:42%;border-radius:3px 3px 0 0;transition:height .5s}
+  .ybar.a{background:var(--y1)} .ybar.b{background:var(--y2)}
+  .ymon .lbl{font-size:10px;color:var(--sub);margin-top:5px;font-weight:700}
+  .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px}
+  .inscard{background:rgba(120,140,170,.08);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .inscard .t{font-size:11px;color:var(--sub);font-weight:700}
+  .inscard .v{font-size:15px;font-weight:800;margin-top:3px}
+  .up{color:#22c55e} .down{color:#ef4444}
+  .hbar{margin-bottom:11px}
+  .hbar .row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+  .hbar .nm{font-weight:700}.hbar .vl{color:var(--sub)}
+  .track{height:15px;background:rgba(120,140,170,.15);border-radius:5px;overflow:hidden}
+  .fill{height:100%;background:var(--pri);border-radius:5px;transition:width .5s}
+  .fill.a{background:var(--acc)}
+  footer{margin-top:6px;font-size:11px;color:var(--sub);text-align:right}
+  .err{background:#7f1d1d;color:#fff;padding:10px;border-radius:8px;margin-bottom:12px;display:none;font-size:13px}
+</style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>📦 정푸드코리아 · 발주 실시간 대시보드</h1>
+      <div class="sub">삼포 통조림 온라인 발주 통합 현황</div>
+    </div>
+    <div class="live"><span class="dot"></span><span id="updated">연결 중…</span></div>
+  </header>
+  <div class="err" id="err"></div>
+  <div class="kpis" id="kpis"></div>
+
+  <div class="panel">
+    <h2>📅 연도별 · 월별 비교 (YoY)
+      <span class="legend"><span><i style="background:var(--y1)"></i>2025</span><span><i style="background:var(--y2)"></i>2026</span></span>
+    </h2>
+    <div class="ycols" id="ycols"></div>
+    <div class="ins" id="yins"></div>
+  </div>
+
+  <div class="grid">
+    <div class="panel" style="margin-bottom:0"><h2>월별 발주 추이 (전체)</h2><div class="cols" id="cols"></div></div>
+    <div>
+      <div class="panel"><h2>채널별 발주 비중</h2><div id="chan"></div></div>
+      <div class="panel" style="margin-bottom:0"><h2>품목군별 발주</h2><div id="grp"></div></div>
+    </div>
+  </div>
+  <footer>Supabase 실시간 연동 · 30초마다 자동 갱신 · 정푸드코리아</footer>
+
+<script>
+  const SUPABASE_URL = 'https://mmuxcuqkxcwdlveqymrk.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_cSOsRVrZ81nncF2OqVHPWw_t55EOcIA';
+  const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const $ = id => document.getElementById(id);
+  const fmt = n => Number(n).toLocaleString();
+
+  async function load(){
+    try{
+      const [sum, chan, month, grp] = await Promise.all([
+        sb.from('kpi_summary').select('*').single(),
+        sb.from('kpi_by_channel').select('*'),
+        sb.from('kpi_by_month').select('*'),
+        sb.from('kpi_by_group').select('*'),
+      ]);
+      if(sum.error||chan.error||month.error||grp.error) throw (sum.error||chan.error||month.error||grp.error);
+      render(sum.data, chan.data, month.data, grp.data);
+      $('err').style.display='none';
+      $('updated').textContent = '최신 · ' + new Date().toLocaleTimeString('ko-KR');
+    }catch(e){
+      $('err').style.display='block';
+      $('err').textContent = '데이터 로드 오류: ' + (e.message||e);
+    }
+  }
+
+  function render(sum, chan, month, grp){
+    const total=sum.total;
+    const M=[...month].sort((a,b)=>a.ym<b.ym?-1:1);
+    const avg=Math.round(total/(sum.months||M.length||1));
+    const peak=M.reduce((m,r)=>r.cnt>m.cnt?r:m, M[0]||{cnt:0});
+
+    // ----- year / month matrix -----
+    const years=[...new Set(M.map(r=>r.ym.slice(0,4)))].sort();
+    const yTotal={}; years.forEach(y=>yTotal[y]=0);
+    const mat={}; for(let mo=1;mo<=12;mo++) mat[mo]={};
+    M.forEach(r=>{ const y=r.ym.slice(0,4), mo=+r.ym.slice(5,7); yTotal[y]+=r.cnt; mat[mo][y]=r.cnt; });
+    const y1=years[0], y2=years[years.length-1];
+
+    $('kpis').innerHTML = [
+      ['총 발주건수', fmt(total)+' 건',''],
+      [y1+'년 누계', fmt(yTotal[y1]||0)+' 건',''],
+      [y2+'년 누계', fmt(yTotal[y2]||0)+' 건','acc'],
+      ['월평균', fmt(avg)+' 건',''],
+      ['피크월 '+(peak.ym||''), fmt(peak.cnt)+' 건','acc'],
+    ].map(k=>`<div class="kpi ${k[2]}"><div class="lab">${k[0]}</div><div class="val">${k[1]}</div></div>`).join('');
+
+    // ----- YoY grouped chart -----
+    let mx=1; for(let mo=1;mo<=12;mo++) years.forEach(y=>{ if(mat[mo][y]>mx) mx=mat[mo][y]; });
+    let html='';
+    for(let mo=1;mo<=12;mo++){
+      const a=mat[mo][y1]||0, b=mat[mo][y2]||0;
+      const bar=(v,cls)=> v? `<div class="ybar ${cls}" style="height:${Math.round(v/mx*100)}%" title="${v.toLocaleString()}건"></div>`:'';
+      html+=`<div class="ymon"><div class="ybars">${bar(a,'a')}${bar(b,'b')}</div><div class="lbl">${mo}월</div></div>`;
+    }
+    $('ycols').innerHTML=html;
+
+    // ----- YoY insights -----
+    const ins=[]; let best=null,worst=null;
+    for(let mo=1;mo<=12;mo++){
+      const a=mat[mo][y1], b=mat[mo][y2];
+      if(a>0 && b!=null){ const g=(b-a)/a; const o={mo,a,b,g};
+        if(!best||g>best.g)best=o; if(!worst||g<worst.g)worst=o; }
+    }
+    ins.push(['피크월', `${peak.ym} · ${fmt(peak.cnt)}건`, '']);
+    if(best) ins.push([`${best.mo}월 전년比 최대증가`, `+${Math.round(best.g*100)}% (${fmt(best.a)}→${fmt(best.b)})`, 'up']);
+    if(worst&&worst!==best) ins.push([`${worst.mo}월 전년比`, `${worst.g>=0?'+':''}${Math.round(worst.g*100)}% (${fmt(worst.a)}→${fmt(worst.b)})`, worst.g>=0?'up':'down']);
+    ins.push(['성수기 패턴', '봄(3~5월) + 6월 집중', '']);
+    $('yins').innerHTML = ins.map(x=>`<div class="inscard"><div class="t">${x[0]}</div><div class="v ${x[2]}">${x[1]}</div></div>`).join('');
+
+    // ----- overall month trend -----
+    const tmx=Math.max(...M.map(m=>m.cnt),1);
+    $('cols').innerHTML = M.map(m=>{
+      const pk=m.cnt===peak.cnt?' peak':'';
+      return `<div class="col${pk}"><div class="n">${fmt(m.cnt)}</div><div class="bar" style="height:${Math.round(m.cnt/tmx*100)}%"></div><div class="m">${(m.ym||'').slice(2)}</div></div>`;
+    }).join('');
+
+    // ----- channel / group -----
+    const cs=[...chan].sort((a,b)=>b.cnt-a.cnt);
+    $('chan').innerHTML = cs.map((c,i)=>hbar(c.channel,c.cnt,total,i===0)).join('');
+    const gs=[...grp].sort((a,b)=>b.cnt-a.cnt);
+    const gmx=gs[0]?gs[0].cnt:1;
+    $('grp').innerHTML = gs.map((g,i)=>hbar(g.grp,g.cnt,total,i===0,gmx)).join('');
+  }
+  function hbar(name,cnt,total,accent,maxv){
+    const pct=total?(cnt/total*100):0;
+    const w=maxv?(cnt/maxv*100):pct;
+    return `<div class="hbar"><div class="row"><span class="nm">${name}</span><span class="vl">${fmt(cnt)}건 · ${pct.toFixed(1)}%</span></div><div class="track"><div class="fill ${accent?'a':''}" style="width:${w}%"></div></div></div>`;
+  }
+
+  load();
+  setInterval(load, 30000);
+</script>
+</body>
+</html>
