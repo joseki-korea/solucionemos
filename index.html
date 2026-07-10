@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>정푸드코리아 · 발주 실시간 대시보드</title>
+<title>정푸드코리아 · 발주 임원 대시보드</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{
     --bg:#0b1220; --panel:#141c2e; --line:#243149; --ink:#e8eef7; --sub:#8ea0bd;
     --pri:#3b82f6; --acc:#f97316; --good:#22c55e; --y1:#38bdf8; --y2:#f97316;
+    --warn:#f59e0b; --danger:#ef4444; --op:#3b82f6;
   }
   @media (prefers-color-scheme: light){
     :root{ --bg:#f1f5f9; --panel:#ffffff; --line:#e2e8f0; --ink:#0f172a; --sub:#64748b; }
@@ -21,54 +22,74 @@
   .live{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--sub)}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--good);animation:pulse 2s infinite}
   @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
-  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
-  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-  .kpi .lab{font-size:11px;color:var(--sub);font-weight:700}
-  .kpi .val{font-size:26px;font-weight:800;margin-top:4px;letter-spacing:-.5px}
-  .kpi.acc .val{color:var(--acc)}
-  .grid{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-bottom:14px}
-  @media (max-width:760px){.grid{grid-template-columns:1fr}}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
   .panel h2{font-size:14px;margin-bottom:14px;padding-left:9px;border-left:4px solid var(--pri);display:flex;justify-content:space-between;align-items:center}
   .legend{font-size:11px;font-weight:400;color:var(--sub);display:flex;gap:12px}
   .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
-  .cols{display:flex;align-items:flex-end;gap:4px;height:170px}
+
+  /* Executive headline */
+  .exec{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(249,115,22,.10));border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
+  .exec .eyebrow{font-size:11px;font-weight:800;color:var(--acc);letter-spacing:1px}
+  .exec .headline{font-size:20px;font-weight:800;margin-top:6px;line-height:1.4;letter-spacing:-.3px}
+  .exec .headline b{color:var(--acc)}
+  /* decision cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:11px;margin-top:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--sub);border-radius:10px;padding:13px 14px}
+  .card.good{border-left-color:var(--good)} .card.op{border-left-color:var(--op)}
+  .card.warn{border-left-color:var(--warn)} .card.danger{border-left-color:var(--danger)}
+  .card .tag{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--sub)}
+  .card.good .tag{color:var(--good)} .card.op .tag{color:var(--op)} .card.warn .tag{color:var(--warn)} .card.danger .tag{color:var(--danger)}
+  .card .fact{font-size:14.5px;font-weight:800;margin:5px 0 6px;line-height:1.35}
+  .card .act{font-size:12px;color:var(--sub);line-height:1.45}
+  .card .act b{color:var(--ink)}
+
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .kpi .lab{font-size:11px;color:var(--sub);font-weight:700}
+  .kpi .val{font-size:24px;font-weight:800;margin-top:4px;letter-spacing:-.5px}
+  .kpi .delta{font-size:11px;font-weight:700;margin-top:2px}
+  .kpi.acc .val{color:var(--acc)}
+  .up{color:#22c55e} .down{color:#ef4444}
+  .grid{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin-bottom:14px}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}.exec .headline{font-size:17px}}
+  .cols{display:flex;align-items:flex-end;gap:4px;height:150px}
   .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
   .col .bar{width:72%;background:var(--pri);border-radius:3px 3px 0 0;transition:height .5s}
   .col.peak .bar{background:var(--acc)}
   .col .m{font-size:8px;color:var(--sub);margin-top:4px;writing-mode:vertical-rl;height:30px}
   .col .n{font-size:8px;color:var(--sub);margin-bottom:2px}
-  /* YoY grouped columns */
-  .ycols{display:flex;align-items:flex-end;gap:6px;height:200px;padding-top:8px}
+  .ycols{display:flex;align-items:flex-end;gap:6px;height:190px;padding-top:8px}
   .ymon{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
   .ybars{display:flex;align-items:flex-end;justify-content:center;gap:3px;width:100%;height:100%}
   .ybar{width:42%;border-radius:3px 3px 0 0;transition:height .5s}
   .ybar.a{background:var(--y1)} .ybar.b{background:var(--y2)}
   .ymon .lbl{font-size:10px;color:var(--sub);margin-top:5px;font-weight:700}
-  .ins{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:14px}
-  .inscard{background:rgba(120,140,170,.08);border:1px solid var(--line);border-radius:10px;padding:11px 13px}
-  .inscard .t{font-size:11px;color:var(--sub);font-weight:700}
-  .inscard .v{font-size:15px;font-weight:800;margin-top:3px}
-  .up{color:#22c55e} .down{color:#ef4444}
   .hbar{margin-bottom:11px}
   .hbar .row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
   .hbar .nm{font-weight:700}.hbar .vl{color:var(--sub)}
   .track{height:15px;background:rgba(120,140,170,.15);border-radius:5px;overflow:hidden}
   .fill{height:100%;background:var(--pri);border-radius:5px;transition:width .5s}
   .fill.a{background:var(--acc)}
-  footer{margin-top:6px;font-size:11px;color:var(--sub);text-align:right}
+  footer{margin-top:6px;font-size:10.5px;color:var(--sub);text-align:right;line-height:1.5}
   .err{background:#7f1d1d;color:#fff;padding:10px;border-radius:8px;margin-bottom:12px;display:none;font-size:13px}
 </style>
 </head>
 <body>
   <header>
     <div>
-      <h1>📦 정푸드코리아 · 발주 실시간 대시보드</h1>
-      <div class="sub">삼포 통조림 온라인 발주 통합 현황</div>
+      <h1>📊 정푸드코리아 · 발주 임원 대시보드</h1>
+      <div class="sub">삼포 통조림 발주 통합 · 빠른 의사결정용</div>
     </div>
     <div class="live"><span class="dot"></span><span id="updated">연결 중…</span></div>
   </header>
   <div class="err" id="err"></div>
+
+  <div class="exec">
+    <div class="eyebrow">⚡ 임원 요약 · EXECUTIVE SUMMARY</div>
+    <div class="headline" id="headline">분석 중…</div>
+    <div class="cards" id="cards"></div>
+  </div>
+
   <div class="kpis" id="kpis"></div>
 
   <div class="panel">
@@ -76,7 +97,6 @@
       <span class="legend"><span><i style="background:var(--y1)"></i>2025</span><span><i style="background:var(--y2)"></i>2026</span></span>
     </h2>
     <div class="ycols" id="ycols"></div>
-    <div class="ins" id="yins"></div>
   </div>
 
   <div class="grid">
@@ -86,7 +106,7 @@
       <div class="panel" style="margin-bottom:0"><h2>품목군별 발주</h2><div id="grp"></div></div>
     </div>
   </div>
-  <footer>Supabase 실시간 연동 · 30초마다 자동 갱신 · 정푸드코리아</footer>
+  <footer>Supabase 실시간 연동 · 30초 자동 갱신 · 정푸드코리아<br>※ 인사이트는 발주 데이터 기반 자동 산출 — 급변 원인은 현업 확인 필요</footer>
 
 <script>
   const SUPABASE_URL = 'https://mmuxcuqkxcwdlveqymrk.supabase.co';
@@ -94,6 +114,8 @@
   const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   const $ = id => document.getElementById(id);
   const fmt = n => Number(n).toLocaleString();
+  const pct = n => (n>=0?'+':'')+Math.round(n*100)+'%';
+  const MN = ['','1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
 
   async function load(){
     try{
@@ -107,78 +129,91 @@
       render(sum.data, chan.data, month.data, grp.data);
       $('err').style.display='none';
       $('updated').textContent = '최신 · ' + new Date().toLocaleTimeString('ko-KR');
-    }catch(e){
-      $('err').style.display='block';
-      $('err').textContent = '데이터 로드 오류: ' + (e.message||e);
-    }
+    }catch(e){ $('err').style.display='block'; $('err').textContent='데이터 로드 오류: '+(e.message||e); }
   }
 
   function render(sum, chan, month, grp){
     const total=sum.total;
     const M=[...month].sort((a,b)=>a.ym<b.ym?-1:1);
-    const avg=Math.round(total/(sum.months||M.length||1));
     const peak=M.reduce((m,r)=>r.cnt>m.cnt?r:m, M[0]||{cnt:0});
+    const CH=[...chan].sort((a,b)=>b.cnt-a.cnt);
+    const GR=[...grp].sort((a,b)=>b.cnt-a.cnt);
 
-    // ----- year / month matrix -----
     const years=[...new Set(M.map(r=>r.ym.slice(0,4)))].sort();
     const yTotal={}; years.forEach(y=>yTotal[y]=0);
     const mat={}; for(let mo=1;mo<=12;mo++) mat[mo]={};
     M.forEach(r=>{ const y=r.ym.slice(0,4), mo=+r.ym.slice(5,7); yTotal[y]+=r.cnt; mat[mo][y]=r.cnt; });
     const y1=years[0], y2=years[years.length-1];
 
+    // ===== executive insights =====
+    // 동기간 성장 (겹치는 달)
+    let s1=0,s2=0,ov=0;
+    for(let mo=1;mo<=12;mo++){ if(mat[mo][y1]!=null&&mat[mo][y2]!=null){ s1+=mat[mo][y1]; s2+=mat[mo][y2]; ov++; } }
+    const yoy = s1? (s2-s1)/s1 : null;
+    // 채널 집중도
+    const c2 = CH.length>=2 ? (CH[0].cnt+CH[1].cnt)/total : (CH[0]?CH[0].cnt/total:0);
+    // 품목 집중도
+    const g1 = GR[0]? GR[0].cnt/total : 0;
+    // YoY 급증/급감 월
+    let best=null,worst=null;
+    for(let mo=1;mo<=12;mo++){ const a=mat[mo][y1],b=mat[mo][y2];
+      if(a>0&&b!=null){ const g=(b-a)/a,o={mo,a,b,g}; if(!best||g>best.g)best=o; if(!worst||g<worst.g)worst=o; } }
+    // 최근 모멘텀 (마지막3 vs 직전3)
+    let mo3=null;
+    if(M.length>=6){ const L=M.slice(-3).reduce((s,r)=>s+r.cnt,0), P=M.slice(-6,-3).reduce((s,r)=>s+r.cnt,0); mo3=P?(L-P)/P:null; }
+
+    // headline: 가장 중요한 한 줄
+    let hl;
+    if(yoy!=null && Math.abs(yoy)>=0.1) hl = `동기간(${ov}개월) 발주가 전년比 <b>${pct(yoy)}</b> ${yoy>=0?'성장':'감소'} — ${yoy>=0?'물량·생산능력 확대 검토':'원인 진단 시급'}`;
+    else hl = `누적 발주 <b>${fmt(total)}건</b> · 주력 ${CH[0].channel}·${GR[0].grp} 중심`;
+    $('headline').innerHTML = hl;
+
+    // decision cards
+    const cards=[];
+    if(yoy!=null) cards.push(['성장','op', `동기간 발주 ${pct(yoy)} (${fmt(s2)} vs ${fmt(s1)})`, yoy>=0?`전년 대비 성장세. <b>생산능력·재고 상향</b> 검토`:`역성장. <b>수요 이탈 원인 진단</b> 필요`]);
+    cards.push(['채널 집중', c2>0.75?'warn':'good', `${CH[0].channel}+${CH[1].channel} = ${Math.round(c2*100)}%`, c2>0.75?`2채널 의존 리스크. <b>채널 다변화·핵심채널 관계관리</b> 우선`:`채널 분산 양호. 균형 유지`]);
+    cards.push(['품목 집중', g1>0.35?'warn':'good', `${GR[0].grp} ${Math.round(g1*100)}% 최다`, g1>0.35?`단일품목 의존. <b>품목 포트폴리오 확대</b> 검토`:`품목 분산 양호`]);
+    if(peak){ const pg=mat[+peak.ym.slice(5,7)][y1]; const gtxt=(pg>0)?` (전년比 ${pct((peak.cnt-pg)/pg)})`:'';
+      cards.push(['시즌 피크','op', `${MN[+peak.ym.slice(5,7)]} 최대 ${fmt(peak.cnt)}건${gtxt}`, `계절 성수기. <b>직전월까지 생산·원부자재·재고 사전확보</b>`]); }
+    if(worst && worst.g<=-0.3) cards.push(['급감 경보','danger', `${MN[worst.mo]} 전년比 ${pct(worst.g)} (${fmt(worst.a)}→${fmt(worst.b)})`, `<b>결품·프로모션·수요변화</b> 중 원인 점검`]);
+    else if(best && best.g>=0.5) cards.push(['급증 포착','op', `${MN[best.mo]} 전년比 ${pct(best.g)} (${fmt(best.a)}→${fmt(best.b)})`, `수요 급증 구간. <b>재현 요인 분석·물량 선제확보</b>`]);
+    if(mo3!=null) cards.push(['최근 모멘텀', mo3>=0?'good':'warn', `최근 3개월 ${pct(mo3)}`, mo3>=0?`상승 추세 지속`:`둔화 신호. 단기 대응 점검`]);
+    $('cards').innerHTML = cards.map(c=>`<div class="card ${c[1]}"><div class="tag">${c[0]}</div><div class="fact">${c[2]}</div><div class="act">${c[3]}</div></div>`).join('');
+
+    // ===== KPIs =====
     $('kpis').innerHTML = [
-      ['총 발주건수', fmt(total)+' 건',''],
-      [y1+'년 누계', fmt(yTotal[y1]||0)+' 건',''],
+      ['총 발주건수', fmt(total)+' 건', ''],
+      ['동기간 YoY', (yoy!=null?pct(yoy):'-'), yoy!=null?(yoy>=0?'up':'down'):''],
       [y2+'년 누계', fmt(yTotal[y2]||0)+' 건','acc'],
-      ['월평균', fmt(avg)+' 건',''],
-      ['피크월 '+(peak.ym||''), fmt(peak.cnt)+' 건','acc'],
-    ].map(k=>`<div class="kpi ${k[2]}"><div class="lab">${k[0]}</div><div class="val">${k[1]}</div></div>`).join('');
+      ['피크월', (peak.ym||'')+' · '+fmt(peak.cnt), ''],
+      ['주력채널', CH[0].channel+' '+Math.round(CH[0].cnt/total*100)+'%', ''],
+      ['주력품목', GR[0].grp+' '+Math.round(GR[0].cnt/total*100)+'%', ''],
+    ].map(k=>`<div class="kpi"><div class="lab">${k[0]}</div><div class="val ${k[2]==='acc'?'':''}">${k[1]}</div>${(k[2]==='up'||k[2]==='down')?`<div class="delta ${k[2]}">${k[2]==='up'?'▲ 성장':'▼ 감소'}</div>`:''}</div>`).join('');
 
-    // ----- YoY grouped chart -----
+    // ===== YoY grouped =====
     let mx=1; for(let mo=1;mo<=12;mo++) years.forEach(y=>{ if(mat[mo][y]>mx) mx=mat[mo][y]; });
-    let html='';
-    for(let mo=1;mo<=12;mo++){
-      const a=mat[mo][y1]||0, b=mat[mo][y2]||0;
+    let h='';
+    for(let mo=1;mo<=12;mo++){ const a=mat[mo][y1]||0,b=mat[mo][y2]||0;
       const bar=(v,cls)=> v? `<div class="ybar ${cls}" style="height:${Math.round(v/mx*100)}%" title="${v.toLocaleString()}건"></div>`:'';
-      html+=`<div class="ymon"><div class="ybars">${bar(a,'a')}${bar(b,'b')}</div><div class="lbl">${mo}월</div></div>`;
-    }
-    $('ycols').innerHTML=html;
+      h+=`<div class="ymon"><div class="ybars">${bar(a,'a')}${bar(b,'b')}</div><div class="lbl">${mo}월</div></div>`; }
+    $('ycols').innerHTML=h;
 
-    // ----- YoY insights -----
-    const ins=[]; let best=null,worst=null;
-    for(let mo=1;mo<=12;mo++){
-      const a=mat[mo][y1], b=mat[mo][y2];
-      if(a>0 && b!=null){ const g=(b-a)/a; const o={mo,a,b,g};
-        if(!best||g>best.g)best=o; if(!worst||g<worst.g)worst=o; }
-    }
-    ins.push(['피크월', `${peak.ym} · ${fmt(peak.cnt)}건`, '']);
-    if(best) ins.push([`${best.mo}월 전년比 최대증가`, `+${Math.round(best.g*100)}% (${fmt(best.a)}→${fmt(best.b)})`, 'up']);
-    if(worst&&worst!==best) ins.push([`${worst.mo}월 전년比`, `${worst.g>=0?'+':''}${Math.round(worst.g*100)}% (${fmt(worst.a)}→${fmt(worst.b)})`, worst.g>=0?'up':'down']);
-    ins.push(['성수기 패턴', '봄(3~5월) + 6월 집중', '']);
-    $('yins').innerHTML = ins.map(x=>`<div class="inscard"><div class="t">${x[0]}</div><div class="v ${x[2]}">${x[1]}</div></div>`).join('');
-
-    // ----- overall month trend -----
+    // ===== month trend =====
     const tmx=Math.max(...M.map(m=>m.cnt),1);
-    $('cols').innerHTML = M.map(m=>{
-      const pk=m.cnt===peak.cnt?' peak':'';
-      return `<div class="col${pk}"><div class="n">${fmt(m.cnt)}</div><div class="bar" style="height:${Math.round(m.cnt/tmx*100)}%"></div><div class="m">${(m.ym||'').slice(2)}</div></div>`;
+    $('cols').innerHTML = M.map(m=>{ const pk=m.cnt===peak.cnt?' peak':'';
+      return `<div class="col${pk}" title="${m.ym} · ${fmt(m.cnt)}건"><div class="n">${fmt(m.cnt)}</div><div class="bar" style="height:${Math.round(m.cnt/tmx*100)}%"></div><div class="m">${(m.ym||'').slice(2)}</div></div>`;
     }).join('');
 
-    // ----- channel / group -----
-    const cs=[...chan].sort((a,b)=>b.cnt-a.cnt);
-    $('chan').innerHTML = cs.map((c,i)=>hbar(c.channel,c.cnt,total,i===0)).join('');
-    const gs=[...grp].sort((a,b)=>b.cnt-a.cnt);
-    const gmx=gs[0]?gs[0].cnt:1;
-    $('grp').innerHTML = gs.map((g,i)=>hbar(g.grp,g.cnt,total,i===0,gmx)).join('');
+    // ===== channel / group =====
+    $('chan').innerHTML = CH.map((c,i)=>hbar(c.channel,c.cnt,total,i===0)).join('');
+    const gmx=GR[0]?GR[0].cnt:1;
+    $('grp').innerHTML = GR.map((g,i)=>hbar(g.grp,g.cnt,total,i===0,gmx)).join('');
   }
   function hbar(name,cnt,total,accent,maxv){
-    const pct=total?(cnt/total*100):0;
-    const w=maxv?(cnt/maxv*100):pct;
-    return `<div class="hbar"><div class="row"><span class="nm">${name}</span><span class="vl">${fmt(cnt)}건 · ${pct.toFixed(1)}%</span></div><div class="track"><div class="fill ${accent?'a':''}" style="width:${w}%"></div></div></div>`;
+    const p=total?(cnt/total*100):0; const w=maxv?(cnt/maxv*100):p;
+    return `<div class="hbar"><div class="row"><span class="nm">${name}</span><span class="vl">${fmt(cnt)}건 · ${p.toFixed(1)}%</span></div><div class="track"><div class="fill ${accent?'a':''}" style="width:${w}%"></div></div></div>`;
   }
-
-  load();
-  setInterval(load, 30000);
+  load(); setInterval(load, 30000);
 </script>
 </body>
 </html>
