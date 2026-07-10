@@ -34,6 +34,21 @@
   .legend{font-size:11px;font-weight:400;color:var(--sub)}
   .echart{width:100%;height:340px}
   .msel{font-family:inherit;font-size:12px;font-weight:600;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 10px;cursor:pointer}
+  .cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin:4px 0 7px}
+  .cal-dn{text-align:center;font-size:12px;font-weight:800;color:var(--sub);padding:4px 0}
+  .cal-dn.sun{color:#ef4444}.cal-dn.sat{color:#3b82f6}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+  .cal-cell{position:relative;min-height:66px;border-radius:14px;border:1px solid var(--line);padding:7px 9px;transition:transform .12s,box-shadow .12s;background:rgba(120,140,170,.05)}
+  .cal-cell.empty{border:none;background:transparent}
+  .cal-cell:not(.empty):hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.2);z-index:2}
+  .cal-cell .d{font-size:12.5px;font-weight:800;color:var(--sub)}
+  .cal-cell .d.sun{color:#ef4444}.cal-cell .d.sat{color:#3b82f6}
+  .cal-cell.hot .d{color:#fff}
+  .cal-cell .c{position:absolute;left:0;right:0;bottom:9px;text-align:center;font-size:15px;font-weight:800;color:var(--ink)}
+  .cal-cell .cu{font-size:9px;font-weight:600;opacity:.7;margin-left:1px}
+  .cal-cell.hot .c{color:#fff}
+  .cal-foot{margin-top:12px;font-size:11.5px;color:var(--sub);text-align:center}
+  .cal-foot b{color:var(--ink)}
   .exec{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(249,115,22,.10));border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
   .exec .eyebrow{font-size:11px;font-weight:800;color:var(--acc);letter-spacing:1px}
   .exec .headline{font-size:20px;font-weight:800;margin-top:6px;line-height:1.4;letter-spacing:-.3px}
@@ -139,7 +154,7 @@
       <div class="panel" style="margin-bottom:0"><h2>상품별 발주 TOP</h2><div class="echart" id="chart-prod" style="height:380px"></div></div>
       <div class="panel" style="margin-bottom:0"><h2>지역별 발주 분포 <span class="legend">배송지 시·도</span></h2><div class="echart" id="chart-region" style="height:380px"></div></div>
     </div>
-    <div class="panel"><h2>📅 월별 발주 달력 <select class="msel" id="calMonth"></select></h2><div class="echart" id="chart-cal" style="height:390px"></div></div>
+    <div class="panel"><h2>📅 월별 발주 달력 <select class="msel" id="calMonth"></select></h2><div id="calWrap"></div></div>
     <div class="panel" style="margin-bottom:0"><h2>요일별 발주 패턴</h2><div class="echart" id="chart-dow" style="height:280px"></div></div>
   </section>
 
@@ -179,26 +194,29 @@
     ecMonth=echarts.init($('chart-month')); ecYoY=echarts.init($('chart-yoy'));
     ecChan=echarts.init($('chart-chan')); ecGrp=echarts.init($('chart-grp'));
     ecProd=echarts.init($('chart-prod')); ecRegion=echarts.init($('chart-region'));
-    ecDow=echarts.init($('chart-dow')); ecCal=echarts.init($('chart-cal'));
+    ecDow=echarts.init($('chart-dow'));
     ecFx=echarts.init($('chart-fx'));
-    window.addEventListener('resize',()=>{[ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal,ecFx].forEach(c=>c&&c.resize());});
+    window.addEventListener('resize',()=>{[ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecFx].forEach(c=>c&&c.resize());});
   }
   function renderCalMonth(ym){
-    if(!ecCal||!window._cal) return;
+    if(!window._cal) return;
     const [Y,Mo]=ym.split('-').map(Number);
     const din=new Date(Y,Mo,0).getDate();
-    const map={}; window._cal.forEach(d=>{ if(d.order_date.slice(0,7)===ym) map[d.order_date]=d.cnt; });
-    const data=[]; let mx=1;
-    for(let d=1;d<=din;d++){ const ds=ym+'-'+String(d).padStart(2,'0'); const v=map[ds]||0; data.push([ds,v]); if(v>mx)mx=v; }
-    ecCal.setOption({
-      tooltip:{formatter:p=>p.data[0]+' · '+fmt(p.data[1])+'건'},
-      visualMap:{min:0,max:mx,orient:'vertical',right:10,top:'middle',calculable:true,itemWidth:12,itemHeight:140,text:['많음','적음'],textStyle:{color:AX},inRange:{color:['#e8eef7','#9dc0f0','#4b8fe3','#2563eb','#ea580c']}},
-      calendar:{orient:'vertical',top:34,bottom:10,left:'center',cellSize:[48,44],range:ym,splitLine:{show:false},
-        itemStyle:{color:DARK?'#0f1626':'#f8fafc',borderColor:DARK?'#141c2e':'#ffffff',borderWidth:3},
-        dayLabel:{firstDay:0,color:AX,fontSize:11,nameMap:['일','월','화','수','목','금','토']},
-        monthLabel:{show:false},yearLabel:{show:false}},
-      series:[{type:'heatmap',coordinateSystem:'calendar',data,label:{show:true,color:AX,fontSize:11,formatter:p=>parseInt(p.data[0].slice(-2),10)}}]
-    },true);
+    const first=new Date(Y,Mo-1,1).getDay();
+    const map={}; let mx=1,total=0;
+    window._cal.forEach(d=>{ if(d.order_date.slice(0,7)===ym){ const dd=+d.order_date.slice(-2); map[dd]=d.cnt; if(d.cnt>mx)mx=d.cnt; total+=d.cnt; }});
+    const dn=['일','월','화','수','목','금','토'];
+    let h='<div class="cal-head">'+dn.map((n,i)=>`<div class="cal-dn ${i===0?'sun':i===6?'sat':''}">${n}</div>`).join('')+'</div><div class="cal-grid">';
+    for(let i=0;i<first;i++) h+='<div class="cal-cell empty"></div>';
+    for(let d=1;d<=din;d++){
+      const v=map[d]||0, dow=(first+d-1)%7, peak=(v===mx&&v>0);
+      const a= v? (0.18+v/mx*0.72):0;
+      const bg= v? (peak?`background:rgba(234,88,12,${Math.min(a+0.1,0.95)})`:`background:rgba(59,130,246,${a})`):'';
+      const hot= a>0.55?' hot':'';
+      h+=`<div class="cal-cell${hot}" style="${bg}" title="${ym}-${String(d).padStart(2,'0')} · ${fmt(v)}건"><span class="d ${dow===0?'sun':dow===6?'sat':''}">${d}</span>${v?`<span class="c">${fmt(v)}<span class="cu">건</span></span>`:''}</div>`;
+    }
+    h+='</div><div class="cal-foot">'+Y+'년 '+Mo+'월 합계 <b>'+fmt(total)+'건</b> · 칸이 진할수록 발주 많음</div>';
+    $('calWrap').innerHTML=h;
   }
   async function loadFx(){
     try{
@@ -276,7 +294,7 @@
     document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));
     const id=b.dataset.t;
     document.querySelectorAll('.tabpanel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+id));
-    setTimeout(()=>{ if(id==='trend'){ecMonth&&ecMonth.resize();ecYoY&&ecYoY.resize();} if(id==='mix'){ecChan&&ecChan.resize();ecGrp&&ecGrp.resize();} if(id==='detail'){[ecProd,ecRegion,ecDow,ecCal].forEach(c=>c&&c.resize());} if(id==='fx'){ecFx&&ecFx.resize();} },30);
+    setTimeout(()=>{ if(id==='trend'){ecMonth&&ecMonth.resize();ecYoY&&ecYoY.resize();} if(id==='mix'){ecChan&&ecChan.resize();ecGrp&&ecGrp.resize();} if(id==='detail'){[ecProd,ecRegion,ecDow].forEach(c=>c&&c.resize());} if(id==='fx'){ecFx&&ecFx.resize();} },30);
     window.scrollTo({top:0,behavior:'smooth'});
   });
 
