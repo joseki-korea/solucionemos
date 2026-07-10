@@ -247,7 +247,7 @@
       xAxis:{type:'category',data:mx,axisLabel:{color:AX,fontSize:10},axisLine:{lineStyle:{color:SPLIT}}},
       yAxis:{type:'value',axisLabel:{color:AX},splitLine:{lineStyle:{color:SPLIT}}},
       series:[
-        {name:'발주건수',type:'bar',data:mv.map((v,i)=>({value:v,itemStyle:{color:M[i].cnt===peak.cnt?GO:GB,borderRadius:[4,4,0,0]}})),barWidth:'55%'},
+        {name:'발주건수',type:'bar',data:mv.map((v,i)=>({value:v,itemStyle:{color:M[i].cnt===peak.cnt?GO:GB,borderRadius:[10,10,4,4]}})),barWidth:'52%'},
         {name:'3개월 이동평균',type:'line',data:ma,smooth:true,symbol:'circle',symbolSize:5,lineStyle:{width:2.5,color:'#f59e0b'},itemStyle:{color:'#f59e0b'}}
       ]
     });
@@ -259,8 +259,8 @@
       xAxis:{type:'category',data:MN.slice(1),axisLabel:{color:AX,fontSize:11},axisLine:{lineStyle:{color:SPLIT}}},
       yAxis:{type:'value',axisLabel:{color:AX},splitLine:{lineStyle:{color:SPLIT}}},
       series:[
-        {name:y1,type:'bar',data:Array.from({length:12},(_,i)=>mat[i+1][y1]||0),itemStyle:{color:GC,borderRadius:[3,3,0,0]}},
-        {name:y2,type:'bar',data:Array.from({length:12},(_,i)=>mat[i+1][y2]||0),itemStyle:{color:GO,borderRadius:[3,3,0,0]}}
+        {name:y1,type:'bar',data:Array.from({length:12},(_,i)=>mat[i+1][y1]||0),itemStyle:{color:GC,borderRadius:[8,8,3,3]}},
+        {name:y2,type:'bar',data:Array.from({length:12},(_,i)=>mat[i+1][y2]||0),itemStyle:{color:GO,borderRadius:[8,8,3,3]}}
       ]
     });
     // ---- 채널 도넛 ----
@@ -269,7 +269,7 @@
       tooltip:{trigger:'item',formatter:'{b}<br>{c}건 ({d}%)'},
       legend:{bottom:0,textStyle:{color:AX},icon:'circle'},
       series:[{type:'pie',radius:['45%','72%'],center:['50%','46%'],avoidLabelOverlap:true,
-        itemStyle:{borderColor:DARK?'#141c2e':'#fff',borderWidth:2},
+        itemStyle:{borderColor:DARK?'#141c2e':'#fff',borderWidth:4,borderRadius:8},
         label:{color:AX,formatter:'{b}\n{d}%',fontSize:11},
         data:CH.map((c,i)=>({name:c.channel,value:c.cnt,itemStyle:{color:cpal[i%cpal.length]}}))}]
     });
@@ -280,8 +280,8 @@
       series:[{type:'treemap',roam:false,nodeClick:false,breadcrumb:{show:false},
         width:'100%',height:'100%',top:6,bottom:6,left:6,right:6,
         label:{show:true,formatter:'{b}\n{c}건',color:'#fff',fontSize:12,fontWeight:700},
-        itemStyle:{borderColor:DARK?'#141c2e':'#fff',borderWidth:2,gapWidth:2},
-        levels:[{itemStyle:{gapWidth:2}}],
+        itemStyle:{borderColor:DARK?'#141c2e':'#fff',borderWidth:3,gapWidth:4,borderRadius:8},
+        levels:[{itemStyle:{gapWidth:4,borderRadius:8}}],
         data:GR.map((x,i)=>({name:x.grp,value:x.cnt,itemStyle:{color:tpal[i%tpal.length]}}))}]
     });
   }
