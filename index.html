@@ -33,6 +33,7 @@
   .panel h2{font-size:14px;margin-bottom:8px;padding-left:9px;border-left:4px solid var(--pri);display:flex;justify-content:space-between;align-items:center}
   .legend{font-size:11px;font-weight:400;color:var(--sub)}
   .echart{width:100%;height:340px}
+  .msel{font-family:inherit;font-size:12px;font-weight:600;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:4px 10px;cursor:pointer}
   .exec{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(249,115,22,.10));border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
   .exec .eyebrow{font-size:11px;font-weight:800;color:var(--acc);letter-spacing:1px}
   .exec .headline{font-size:20px;font-weight:800;margin-top:6px;line-height:1.4;letter-spacing:-.3px}
@@ -138,7 +139,7 @@
       <div class="panel" style="margin-bottom:0"><h2>상품별 발주 TOP</h2><div class="echart" id="chart-prod" style="height:380px"></div></div>
       <div class="panel" style="margin-bottom:0"><h2>지역별 발주 분포 <span class="legend">배송지 시·도</span></h2><div class="echart" id="chart-region" style="height:380px"></div></div>
     </div>
-    <div class="panel"><h2>📅 일자별 발주 히트맵 <span class="legend">진할수록 발주 많음 · 세로축=요일</span></h2><div class="echart" id="chart-cal" style="height:210px"></div></div>
+    <div class="panel"><h2>📅 월별 발주 달력 <select class="msel" id="calMonth"></select></h2><div class="echart" id="chart-cal" style="height:390px"></div></div>
     <div class="panel" style="margin-bottom:0"><h2>요일별 발주 패턴</h2><div class="echart" id="chart-dow" style="height:280px"></div></div>
   </section>
 
@@ -181,6 +182,23 @@
     ecDow=echarts.init($('chart-dow')); ecCal=echarts.init($('chart-cal'));
     ecFx=echarts.init($('chart-fx'));
     window.addEventListener('resize',()=>{[ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal,ecFx].forEach(c=>c&&c.resize());});
+  }
+  function renderCalMonth(ym){
+    if(!ecCal||!window._cal) return;
+    const [Y,Mo]=ym.split('-').map(Number);
+    const din=new Date(Y,Mo,0).getDate();
+    const map={}; window._cal.forEach(d=>{ if(d.order_date.slice(0,7)===ym) map[d.order_date]=d.cnt; });
+    const data=[]; let mx=1;
+    for(let d=1;d<=din;d++){ const ds=ym+'-'+String(d).padStart(2,'0'); const v=map[ds]||0; data.push([ds,v]); if(v>mx)mx=v; }
+    ecCal.setOption({
+      tooltip:{formatter:p=>p.data[0]+' · '+fmt(p.data[1])+'건'},
+      visualMap:{min:0,max:mx,orient:'vertical',right:10,top:'middle',calculable:true,itemWidth:12,itemHeight:140,text:['많음','적음'],textStyle:{color:AX},inRange:{color:['#e8eef7','#9dc0f0','#4b8fe3','#2563eb','#ea580c']}},
+      calendar:{orient:'vertical',top:34,bottom:10,left:'center',cellSize:[48,44],range:ym,splitLine:{show:false},
+        itemStyle:{color:DARK?'#0f1626':'#f8fafc',borderColor:DARK?'#141c2e':'#ffffff',borderWidth:3},
+        dayLabel:{firstDay:0,color:AX,fontSize:11,nameMap:['일','월','화','수','목','금','토']},
+        monthLabel:{show:false},yearLabel:{show:false}},
+      series:[{type:'heatmap',coordinateSystem:'calendar',data,label:{show:true,color:AX,fontSize:11,formatter:p=>parseInt(p.data[0].slice(-2),10)}}]
+    },true);
   }
   async function loadFx(){
     try{
@@ -242,20 +260,14 @@
         xAxis:{type:'category',data:dname,axisLabel:{color:AX},axisLine:{lineStyle:{color:SPLIT}}},
         yAxis:{type:'value',axisLabel:{color:AX},splitLine:{lineStyle:{color:SPLIT}}},
         series:[{type:'bar',data:dorder.map(d=>dmap[d]||0),itemStyle:{color:GB,borderRadius:[8,8,0,0]},barWidth:'52%'}]});
-      // 일자별 캘린더 히트맵
-      const dd=day.data, cmax=Math.max(...dd.map(x=>x.cnt),1);
-      ecCal.setOption({
-        tooltip:{formatter:p=>p.data[0]+' · '+fmt(p.data[1])+'건'},
-        visualMap:{min:0,max:cmax,orient:'horizontal',left:'center',top:0,calculable:true,itemWidth:14,itemHeight:120,text:['많음','적음'],textStyle:{color:AX},
-          inRange:{color:['#e8eef7','#9dc0f0','#4b8fe3','#2563eb','#ea580c']}},
-        calendar:{top:46,left:38,right:16,bottom:4,cellSize:['auto',14],range:[dd[0].order_date,dd[dd.length-1].order_date],
-          splitLine:{show:false},
-          itemStyle:{color:DARK?'#0f1626':'#f8fafc',borderColor:DARK?'#141c2e':'#ffffff',borderWidth:2},
-          dayLabel:{color:AX,fontSize:9,nameMap:['일','월','화','수','목','금','토']},
-          monthLabel:{color:AX,fontSize:10,nameMap:['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월']},
-          yearLabel:{color:AX,fontSize:11}},
-        series:[{type:'heatmap',coordinateSystem:'calendar',data:dd.map(x=>[x.order_date,x.cnt])}]
-      });
+      // 월별 발주 달력 (드롭다운으로 월 선택)
+      window._cal = day.data;
+      const months=[...new Set(day.data.map(d=>d.order_date.slice(0,7)))].sort();
+      const sel=$('calMonth');
+      sel.innerHTML=months.map(m=>{const[y,mo]=m.split('-');return `<option value="${m}">${y}년 ${+mo}월</option>`;}).join('');
+      sel.value=months[months.length-1];
+      sel.onchange=()=>renderCalMonth(sel.value);
+      renderCalMonth(sel.value);
     }catch(e){}
   }
 
