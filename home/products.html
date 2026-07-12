@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>삼포 제품 — 정푸드코리아</title>
+<meta name="description" content="삼포(SAMPO) 통조림 제품 상세 — 깐포도·큰구슬 골뱅이·황도·백도·애플망고·자연산 골뱅이.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css" rel="stylesheet">
+<style>
+  :root{
+    --f-display:"Black Han Sans","NanumSquare",sans-serif;
+    --f-head:"NanumSquare","Pretendard",sans-serif;
+    --f-body:"Pretendard","NanumSquare",system-ui,sans-serif;
+    --espresso:#0f3527; --paper:#eef3e6; --white:#fbfdf7; --ink:#14271c; --muted:#586b58;
+    --line:#d7e1c8; --fresh:#5aa73f; --fresh-d:#437f2c; --gold:#c9a24a; --red:#c0392b; --maxw:1000px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  header.nav{position:sticky;top:0;z-index:40;background:rgba(15,53,39,.96);backdrop-filter:blur(10px)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:baseline;gap:10px;color:#fff}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--red);transform:translateY(-2px)}
+  .brand .ko{font-family:var(--f-display);font-size:22px}
+  .brand .en{font-family:var(--f-head);font-weight:800;font-size:11px;letter-spacing:.22em;color:var(--gold)}
+  .nav-back{font-family:var(--f-head);font-weight:700;color:rgba(255,255,255,.9);font-size:15px}
+  .hero{background:var(--espresso);color:#fff;padding:70px 0 46px}
+  .hero .kick{font-family:var(--f-head);font-weight:800;letter-spacing:.24em;font-size:13px;text-transform:uppercase;color:var(--gold)}
+  .hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(38px,6vw,72px);line-height:1.02;margin:12px 0 0}
+  .hero p{color:#b7c9b7;font-size:17px;margin:18px 0 0;max-width:46ch}
+  /* jump nav */
+  .jump{position:sticky;top:66px;z-index:30;background:var(--white);border-bottom:1px solid var(--line)}
+  .jump-in{display:flex;gap:8px;overflow-x:auto;padding:12px 24px;max-width:var(--maxw);margin:0 auto}
+  .jump a{white-space:nowrap;font-family:var(--f-head);font-weight:700;font-size:14.5px;color:var(--ink);background:var(--paper);border:1px solid var(--line);padding:8px 15px;border-radius:999px;transition:background .15s,color .15s}
+  .jump a:hover{background:var(--fresh);color:#fff;border-color:var(--fresh)}
+  /* product blocks */
+  .prod{padding:64px 0 20px;scroll-margin-top:130px}
+  .prod-h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .prod-h .nm{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,4.4vw,50px);color:var(--ink);line-height:1}
+  .prod-h .en{font-family:var(--f-head);font-weight:800;font-size:14px;letter-spacing:.06em;color:var(--fresh-d)}
+  .prod-h .tag{font-family:var(--f-head);font-weight:800;font-size:12px;color:#fff;background:var(--fresh);padding:4px 11px;border-radius:2px}
+  .prod-h .tag.grape{background:#6d2a6b}
+  .prod-desc{color:var(--muted);font-size:16.5px;margin:0 0 22px;max-width:60ch}
+  .detail-img{border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 12px 34px rgba(15,53,39,.10);background:#fff}
+  .detail-img img{width:100%}
+  .cta{background:var(--espresso);color:#fff;padding:56px 0;margin-top:64px;text-align:center}
+  .cta h2{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,4vw,44px);margin:0}
+  .cta a{display:inline-block;margin-top:22px;background:#fff;color:var(--espresso);font-family:var(--f-head);font-weight:800;padding:14px 30px;border-radius:2px}
+  footer{background:#0a271b;color:#7e9585;padding:34px 0;font-size:14px}
+  .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  .foot-in b{color:#fff;font-family:var(--f-display);font-weight:400}
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+  <a class="brand" href="index.html"><span class="dot"></span><span class="ko">정푸드코리아</span><span class="en">SAMPO</span></a>
+  <a class="nav-back" href="index.html">← 홈으로</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div class="kick">SAMPO Products</div>
+  <h1>삼포의 제품</h1>
+  <p>과일부터 안주까지, 한 캔에 담은 삼포. 각 제품의 상세를 확인하세요.</p>
+</div></section>
+
+<nav class="jump"><div class="jump-in">
+  <a href="#kkanpodo">깐포도</a>
+  <a href="#golbaengi">큰구슬 골뱅이</a>
+  <a href="#jayeonsan">자연산 골뱅이</a>
+  <a href="#hwangdo">황도</a>
+  <a href="#baekdo">백도</a>
+  <a href="#mango">애플망고</a>
+</div></nav>
+
+<div class="wrap">
+  <section class="prod" id="kkanpodo">
+    <div class="prod-h"><span class="nm">깐포도</span><span class="en">PEELED &amp; SEEDLESS GRAPES</span><span class="tag grape">SNS 화제</span></div>
+    <p class="prod-desc">껍질과 씨를 제거한 알맹이만 담은 과일 통조림. 얼려 먹고 화채로 즐기는 여름 간식으로 SNS에서 화제입니다.</p>
+    <div class="detail-img"><img src="products/깐포도.jpg" alt="삼포 깐포도 상세" loading="lazy"></div>
+  </section>
+  <section class="prod" id="golbaengi">
+    <div class="prod-h"><span class="nm">큰구슬 골뱅이</span><span class="en">WHELK</span><span class="tag">업소 1픽</span></div>
+    <p class="prod-desc">굵은 알과 탱글한 식감. 호프집·포차 사장님이 동원·유동에서 갈아타는 가성비 골뱅이입니다.</p>
+    <div class="detail-img"><img src="products/큰구슬골뱅이.jpg" alt="삼포 큰구슬 골뱅이 상세" loading="lazy"></div>
+  </section>
+  <section class="prod" id="jayeonsan">
+    <div class="prod-h"><span class="nm">자연산 골뱅이</span><span class="en">NATURAL WHELK</span></div>
+    <p class="prod-desc">깔끔한 국민 골뱅이. 무침·소면 안주로 두고두고 즐기기 좋은 스테디셀러입니다.</p>
+    <div class="detail-img"><img src="products/자연산골뱅이.jpg" alt="삼포 자연산 골뱅이 상세" loading="lazy"></div>
+  </section>
+  <section class="prod" id="hwangdo">
+    <div class="prod-h"><span class="nm">황도</span><span class="en">YELLOW PEACH</span></div>
+    <p class="prod-desc">부드럽고 향긋한 황도. 통조림 과일 카테고리의 대표 스테디셀러입니다.</p>
+    <div class="detail-img"><img src="products/황도.jpg" alt="삼포 황도 상세" loading="lazy"></div>
+  </section>
+  <section class="prod" id="baekdo">
+    <div class="prod-h"><span class="nm">백도</span><span class="en">WHITE PEACH</span></div>
+    <p class="prod-desc">아삭 상큼한 백도. 차갑게 즐기면 더 좋은 여름 과일 통조림입니다.</p>
+    <div class="detail-img"><img src="products/백도.jpg" alt="삼포 백도 상세" loading="lazy"></div>
+  </section>
+  <section class="prod" id="mango">
+    <div class="prod-h"><span class="nm">애플망고</span><span class="en">APPLE MANGO</span></div>
+    <p class="prod-desc">달콤 탱글한 애플망고. 얼음·우유에 올려 집에서 즐기는 홈 망고빙수 재료로 제격입니다.</p>
+    <div class="detail-img"><img src="products/애플망고.jpg" alt="삼포 애플망고 상세" loading="lazy"></div>
+  </section>
+</div>
+
+<section class="cta"><div class="wrap">
+  <h2>제품·OEM·수출 문의</h2>
+  <a href="index.html#contact">문의하기 →</a>
+</div></section>
+
+<footer><div class="wrap foot-in">
+  <span><b>정푸드코리아 · SAMPO</b></span>
+  <span>02-921-7040 · info@jungfoodkorea.com · 충주</span>
+</div></footer>
+</body>
+</html>
