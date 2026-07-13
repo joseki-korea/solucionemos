@@ -55,6 +55,10 @@
   .cal-legend{display:flex;gap:16px;justify-content:center;font-size:11.5px;color:var(--sub);margin-top:12px}
   .cal-legend i{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:-1px}
   #briefDay{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+  .bfilters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .fchip{font-family:inherit;font-size:12px;font-weight:700;color:var(--sub);background:rgba(120,140,170,.08);border:1px solid var(--line);border-radius:20px;padding:6px 13px;cursor:pointer;transition:all .15s;white-space:nowrap}
+  .fchip:hover{color:var(--ink)}
+  .fchip.active{background:var(--pri);color:#fff;border-color:var(--pri)}
   .exec{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(249,115,22,.10));border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
   .exec .eyebrow{font-size:11px;font-weight:800;color:var(--acc);letter-spacing:1px}
   .exec .headline{font-size:20px;font-weight:800;margin-top:6px;line-height:1.4;letter-spacing:-.3px}
@@ -171,13 +175,14 @@
   </section>
 
   <section class="tabpanel" id="tab-news">
+    <div class="bfilters" id="briefFilters"></div>
     <div class="panel">
       <h2>📅 브리핑·지원사업 달력 <select class="msel" id="briefCalMonth"></select></h2>
       <div id="briefCalWrap"></div>
       <div id="briefDay"></div>
     </div>
     <div class="panel">
-      <h2>📰 업계 브리핑 <span class="legend">식품·HACCP·수출 동향 · 자동 업데이트</span></h2>
+      <h2>📰 <span id="briefListTitle">업계 브리핑</span> <span class="legend">식품·HACCP·수출·지원사업 · 필터 선택</span></h2>
       <div class="newslist" id="news"></div>
     </div>
   </section>
@@ -426,49 +431,73 @@
   const SUPPORT = [
     // 예: {date:'2026-07-31', title:'식품 수출 바우처 지원', agency:'식품진흥원', url:''},
   ];
-  let _briefEvents=[];
+  let _briefEvents=[], _briefNews=[], _briefFilter='all', _briefYm='';
   function buildBriefEvents(news){
     const ev=[];
-    (news||[]).forEach(n=>{ const d=(n.published||'').slice(0,10); if(/^\d{4}-\d{2}-\d{2}$/.test(d)) ev.push({date:d,type:'news',title:n.title,url:n.url,sub:(n.category||'')+(n.source?' · '+n.source:'')}); });
-    SUPPORT.forEach(s=>{ const d=(s.date||'').slice(0,10); if(/^\d{4}-\d{2}-\d{2}$/.test(d)) ev.push({date:d,type:'support',title:s.title,url:s.url||'',sub:'지원사업 마감'+(s.agency?' · '+s.agency:'')}); });
+    (news||[]).forEach(n=>{ const d=(n.published||'').slice(0,10); if(/^\d{4}-\d{2}-\d{2}$/.test(d)) ev.push({date:d,type:'news',cat:n.category||'기타',title:n.title,url:n.url,sub:(n.category||'')+(n.source?' · '+n.source:'')}); });
+    SUPPORT.forEach(s=>{ const d=(s.date||'').slice(0,10); if(/^\d{4}-\d{2}-\d{2}$/.test(d)) ev.push({date:d,type:'support',cat:'지원사업',title:s.title,url:s.url||'',sub:'지원사업 마감'+(s.agency?' · '+s.agency:'')}); });
     _briefEvents=ev;
     const set=new Set(ev.map(e=>e.date.slice(0,7))); set.add(new Date().toISOString().slice(0,7));
     return [...set].sort();
   }
+  function briefFiltered(){
+    if(_briefFilter==='all') return _briefEvents;
+    if(_briefFilter==='지원사업') return _briefEvents.filter(e=>e.type==='support');
+    return _briefEvents.filter(e=>e.cat===_briefFilter);
+  }
   function renderBriefCal(ym){
+    _briefYm=ym;
+    const evAll=briefFiltered();
     const [Y,Mo]=ym.split('-').map(Number);
     const din=new Date(Y,Mo,0).getDate(), first=new Date(Y,Mo-1,1).getDay();
-    const byday={}; _briefEvents.forEach(e=>{ if(e.date.slice(0,7)===ym){ const dd=+e.date.slice(-2); (byday[dd]=byday[dd]||[]).push(e); }});
+    const byday={}; evAll.forEach(e=>{ if(e.date.slice(0,7)===ym){ const dd=+e.date.slice(-2); (byday[dd]=byday[dd]||[]).push(e); }});
     const dn=['일','월','화','수','목','금','토'];
     let h='<div class="cal-head">'+dn.map((n,i)=>`<div class="cal-dn ${i===0?'sun':i===6?'sat':''}">${n}</div>`).join('')+'</div><div class="cal-grid">';
     for(let i=0;i<first;i++) h+='<div class="cal-cell empty"></div>';
     for(let d=1;d<=din;d++){
       const evs=byday[d]||[], dow=(first+d-1)%7;
-      const dots=evs.slice(0,6).map(e=>`<span class="ev ${e.type}" style="background:${e.type==='support'?'var(--acc)':'var(--pri)'}"></span>`).join('');
+      const dots=evs.slice(0,6).map(e=>`<span class="ev" style="background:${e.type==='support'?'var(--acc)':'var(--pri)'}"></span>`).join('');
       h+=`<div class="cal-cell${evs.length?' hasday':''}" data-d="${d}"><span class="d ${dow===0?'sun':dow===6?'sat':''}">${d}</span>${dots?`<span class="evs">${dots}</span>`:''}</div>`;
     }
     h+='</div><div class="cal-legend"><span><i style="background:var(--pri)"></i>업계 뉴스</span><span><i style="background:var(--acc)"></i>지원사업 마감</span></div>';
-    if(!SUPPORT.length) h+='<div class="cal-foot">지원사업 일정을 알려주시면 이 달력에 함께 표시됩니다.</div>';
+    if(!SUPPORT.length && (_briefFilter==='all'||_briefFilter==='지원사업')) h+='<div class="cal-foot">지원사업 일정을 알려주시면 이 달력에 함께 표시됩니다.</div>';
     $('briefCalWrap').innerHTML=h; $('briefDay').innerHTML='';
     document.querySelectorAll('#briefCalWrap .cal-cell.hasday').forEach(c=>c.onclick=()=>showBriefDay(ym+'-'+String(c.dataset.d).padStart(2,'0')));
   }
   function showBriefDay(date){
-    const items=_briefEvents.filter(e=>e.date===date); if(!items.length) return;
-    $('briefDay').innerHTML = items.map(e=>`<a class="nitem ${e.type==='support'?'op':''}" ${e.url?`href="${e.url}" target="_blank" rel="noopener"`:''}><span class="nchip">${e.type==='support'?'지원사업':'뉴스'} · ${date}</span><span class="ntitle">${e.title}</span><span class="nsrc">${e.sub||''}</span></a>`).join('');
+    const items=briefFiltered().filter(e=>e.date===date); if(!items.length) return;
+    $('briefDay').innerHTML = items.map(e=>`<a class="nitem ${e.type==='support'?'op':''}" ${e.url?`href="${e.url}" target="_blank" rel="noopener"`:''}><span class="nchip">${e.type==='support'?'지원사업':e.cat} · ${date}</span><span class="ntitle">${e.title}</span><span class="nsrc">${e.sub||''}</span></a>`).join('');
+  }
+  function renderBriefList(){
+    const tone=i=> i===1?'danger':(i===2?'op':'');
+    if(_briefFilter==='지원사업'){
+      $('briefListTitle').textContent='지원사업 목록';
+      $('news').innerHTML = SUPPORT.length? SUPPORT.map(s=>`<a class="nitem op" ${s.url?`href="${s.url}" target="_blank" rel="noopener"`:''}><span class="nchip">지원사업</span><span class="ntitle">${s.title}</span><span class="nsrc">${s.agency||''} · 마감 ${s.date||''}</span></a>`).join('') : '<div class="cal-foot" style="text-align:left">등록된 지원사업이 없습니다. 목록을 알려주시면 추가합니다.</div>';
+      return;
+    }
+    $('briefListTitle').textContent = _briefFilter==='all'?'업계 브리핑':_briefFilter;
+    const f = _briefFilter==='all'? _briefNews : _briefNews.filter(n=>n.category===_briefFilter);
+    $('news').innerHTML = f.length? f.map(n=>`<a class="nitem ${tone(n.importance)}" href="${n.url}" target="_blank" rel="noopener"><span class="nchip">${n.category}</span><span class="ntitle">${n.title}</span><span class="nsum">${n.summary||''}</span><span class="nsrc">${n.source||''} · ${n.published||''}</span></a>`).join('') : '<div class="cal-foot" style="text-align:left">해당 분류의 소식이 아직 없습니다.</div>';
+  }
+  function setBriefFilter(f){
+    _briefFilter=f;
+    document.querySelectorAll('#briefFilters .fchip').forEach(c=>c.classList.toggle('active',c.dataset.f===f));
+    renderBriefCal(_briefYm); renderBriefList();
   }
   async function loadNews(){
     try{
-      const {data,error}=await sb.from('news_briefing').select('*').order('importance',{ascending:true}).order('published',{ascending:false}).limit(12);
-      if(!error && data && data.length){
-        const tone=i=> i===1?'danger':(i===2?'op':'');
-        $('news').innerHTML = data.map(n=>`<a class="nitem ${tone(n.importance)}" href="${n.url}" target="_blank" rel="noopener"><span class="nchip">${n.category}</span><span class="ntitle">${n.title}</span><span class="nsum">${n.summary||''}</span><span class="nsrc">${n.source||''} · ${n.published||''}</span></a>`).join('');
-      }
-      const months=buildBriefEvents(data||[]);
+      const {data}=await sb.from('news_briefing').select('*').order('importance',{ascending:true}).order('published',{ascending:false}).limit(60);
+      _briefNews = data||[];
+      const months=buildBriefEvents(_briefNews);
+      const cats=[...new Set(_briefNews.map(n=>n.category).filter(Boolean))];
+      const chips=[['all','전체'],['지원사업','지원사업'],...cats.map(c=>[c,c])];
+      $('briefFilters').innerHTML=chips.map(([f,l])=>`<button class="fchip${f===_briefFilter?' active':''}" data-f="${f}">${l}</button>`).join('');
+      $('briefFilters').onclick=e=>{const b=e.target.closest('.fchip'); if(b) setBriefFilter(b.dataset.f);};
       const bsel=$('briefCalMonth');
       bsel.innerHTML=months.map(m=>{const[y,mo]=m.split('-');return `<option value="${m}">${y}년 ${+mo}월</option>`;}).join('');
       bsel.value=months[months.length-1];
       bsel.onchange=()=>renderBriefCal(bsel.value);
-      renderBriefCal(bsel.value);
+      renderBriefCal(bsel.value); renderBriefList();
     }catch(e){}
   }
 
