@@ -71,13 +71,17 @@
   .chatin{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
   .chatin input{flex:1;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;font-family:inherit}
   .chatin button{background:var(--pri);color:#fff;border:none;border-radius:10px;padding:0 14px;font-weight:800;cursor:pointer}
-  .storegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
+  .storegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
   .scard{background:var(--bg);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
   .scard:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.2)}
-  .scard .simg{width:100%;aspect-ratio:1;object-fit:cover;background:#fff}
-  .scard .sbody{padding:11px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
-  .scard .snm{font-size:13px;font-weight:800;line-height:1.32}
-  .scard .sprice{font-size:12px;color:var(--sub);font-weight:700}
+  .scard .simg{width:100%;height:150px;object-fit:contain;background:#fff;padding:8px}
+  .scard .sbody{padding:12px 13px;display:flex;flex-direction:column;gap:7px;flex:1}
+  .scard .snm{font-size:13.5px;font-weight:800;line-height:1.32}
+  .scard .sstar{font-size:13px;color:#f59e0b;font-weight:800;letter-spacing:1px}
+  .scard .sstar .scount{color:var(--sub);font-size:11px;font-weight:700;letter-spacing:0;margin-left:5px}
+  .scard .squote{font-size:12px;color:var(--ink);line-height:1.45;font-style:italic;opacity:.9}
+  .scard .stag2{font-size:11px;line-height:1.5}
+  .scard .stag2 b{font-weight:800}
   .scard .slink{margin-top:auto;font-size:12px;font-weight:800;color:#fff;background:#03c75a;text-align:center;padding:8px;border-radius:8px;text-decoration:none}
   .scard .slink:hover{filter:brightness(1.08)}
   .exec{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(249,115,22,.10));border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
@@ -475,18 +479,19 @@
         data:GR.map((x,i)=>({name:x.grp,value:x.cnt,itemStyle:{color:tpal[i%tpal.length]}}))}]
     });
   }
-  // ===== 제품별 스토어·리뷰 (네이버 카탈로그 = 구매평·별점) =====
+  // ===== 제품별 스토어·리뷰 (네이버 블로그·카페 후기 조사 기반 요약) =====
   const STORE=[
-    {name:'삼포 깐포도 400g', cat:'52038211620', price:'4,100원~', img:'https://shopping-phinf.pstatic.net/main_5203821/52038211620.20241220111404.jpg', tag:'SNS 화제'},
-    {name:'삼포 큰구슬 골뱅이', cat:'56987875749', price:'낱개 5천원대', img:'https://shopping-phinf.pstatic.net/main_5698787/56987875749.20260623070655.jpg', tag:'업소 1픽'},
-    {name:'삼포 황도 400g', cat:'58867559343', price:'550원~', img:'https://shopping-phinf.pstatic.net/main_5886755/58867559343.20260629070556.jpg'},
-    {name:'삼포 백도 슬라이스 400g', cat:'52485011702', price:'1,680원~', img:'https://shopping-phinf.pstatic.net/main_5248501/52485011702.20250114174454.jpg'},
-    {name:'삼포 애플망고 400g', cat:'52505464622', price:'2,000원~', img:'https://shopping-phinf.pstatic.net/main_5250546/52505464622.20250115140851.jpg'},
-    {name:'삼포 번데기탕 280g', cat:'56862258604', price:'1,270원~', img:'https://shopping-phinf.pstatic.net/main_5686225/56862258604.20260626071157.jpg'},
+    {name:'삼포 깐포도 400g', cat:'52038211620', img:'https://shopping-phinf.pstatic.net/main_5203821/52038211620.20241220111404.jpg', tag:'SNS 화제', star:4, reviews:'후기 126건+', quote:'"유행이라 먹어봤는데 얼려먹으니 여름간식 대만족"', pros:'껍질·씨 없이 간편 · 얼려먹기 · 화채/에이드', cons:'쇠맛(금속이취) · 과한 단맛'},
+    {name:'삼포 큰구슬 골뱅이', cat:'56987875749', img:'https://shopping-phinf.pstatic.net/main_5698787/56987875749.20260623070655.jpg', tag:'업소 1픽', star:4, reviews:'후기 620건+', quote:'"동원 물렁 대비 큰알 탱글, 손님 95% 만족"', pros:'굵은 알 탱글 · 가성비 · 넉넉한 양', cons:'가끔 딱딱하게 씹히는 알'},
+    {name:'삼포 황도 슬라이스 400g', cat:'58867559343', img:'https://shopping-phinf.pstatic.net/main_5886755/58867559343.20260629070556.jpg', star:4, reviews:'후기 41건', quote:'"부드럽고 향긋 · 가성비 좋은 스테디셀러"', pros:'부드럽고 향긋 · 홈카페 · 가성비', cons:'통조림 향(개봉 후 잠시 두면 완화)'},
+    {name:'삼포 백도 슬라이스 400g', cat:'52485011702', img:'https://shopping-phinf.pstatic.net/main_5248501/52485011702.20250114174454.jpg', star:4, reviews:'후기 9건', quote:'"은은한 단맛, 차갑게 먹으면 여름에 딱"', pros:'아삭 상큼 · 황도와 함께 즐기기', cons:'후기 수 아직 적음'},
+    {name:'삼포 애플망고 400g', cat:'52505464622', img:'https://shopping-phinf.pstatic.net/main_5250546/52505464622.20250115140851.jpg', star:3, reviews:'후기 39건', quote:'"큐브는 큼직한데 생긴 건 황도 같기도"', pros:'큐브 큼직 · 카페 토핑/빙수용', cons:'쏘쏘하다는 평 · 재구매 갈림'},
+    {name:'삼포 자연산 골뱅이 400g', cat:'52612275066', img:'https://shopping-phinf.pstatic.net/main_5261227/52612275066.20260625070423.jpg', star:4, reviews:'후기 57건', quote:'"가장 대중적인 골뱅이 · 무침에 딱"', pros:'국민 골뱅이 · 무침·소면 안주 · 신선', cons:'프리미엄 대비 가격대 있음'},
   ];
   function renderStore(){
     if(!$('storegrid')) return;
-    $('storegrid').innerHTML=STORE.map(s=>`<div class="scard"><img class="simg" src="${s.img}" alt="${s.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'"><div class="sbody"><div class="snm">${s.name}${s.tag?` <span style="font-size:10px;color:var(--acc)">· ${s.tag}</span>`:''}</div><div class="sprice">최저 ${s.price}</div><a class="slink" href="https://search.shopping.naver.com/catalog/${s.cat}" target="_blank" rel="noopener">스토어·리뷰 보기 →</a></div></div>`).join('');
+    const stars=n=>'★★★★★☆☆☆☆☆'.slice(5-n,10-n);
+    $('storegrid').innerHTML=STORE.map(s=>`<div class="scard"><img class="simg" src="${s.img}" alt="${s.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'"><div class="sbody"><div class="snm">${s.name}${s.tag?` <span style="font-size:10px;color:var(--acc)">· ${s.tag}</span>`:''}</div><div class="sstar">${stars(s.star)}<span class="scount">${s.reviews}</span></div><div class="squote">${s.quote}</div><div class="stag2"><b style="color:var(--good)">👍</b> ${s.pros}<br><b style="color:var(--danger)">👎</b> ${s.cons}</div><a class="slink" href="https://search.shopping.naver.com/catalog/${s.cat}" target="_blank" rel="noopener">스토어·리뷰 보기 →</a></div></div>`).join('');
   }
   async function loadRevenue(){
     try{
