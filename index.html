@@ -179,7 +179,8 @@
 
   <section class="tabpanel" id="tab-revenue">
     <div class="kpis" id="revkpi"></div>
-    <div class="panel"><h2>💰 월별 매출 추이 <span class="legend">추정 · 변경공급가 통일 · 2025-02~2026-07초</span></h2><div class="echart" id="chart-revmonth"></div></div>
+    <div class="panel"><h2>📆 일자별 매출 <span class="legend">최근 30영업일 · 단가×채널단위 환산(추정)</span></h2><div class="echart" id="chart-revday" style="height:260px"></div></div>
+    <div class="panel"><h2>💰 월별 매출 추이 <span class="legend">추정 · 변경공급가 통일 · 2025-02~2026-07</span></h2><div class="echart" id="chart-revmonth"></div></div>
     <div class="panel"><h2>📅 연도별 매출 <span class="legend">연도 총액 · 동기간 비교</span></h2><div class="echart" id="chart-revyear" style="height:300px"></div></div>
     <div class="grid">
       <div class="panel" style="margin-bottom:0"><h2>채널별 매출</h2><div class="echart" id="chart-revchan" style="height:320px"></div></div>
@@ -296,7 +297,7 @@
   const g = (c1,c2)=> new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:c1},{offset:1,color:c2}]);
   const GB=g('#60a5fa','#2563eb'), GO=g('#fb923c','#ea580c'), GC=g('#38bdf8','#0284c7');
 
-  let ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal,ecFx,ecRevM,ecRevC,ecRevP,ecRevY,ecInvG,ecInvT,ecVocC,ecVocI,ecPnlR,ecPnlP,ecPnlC,_charts=false;
+  let ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal,ecFx,ecRevM,ecRevC,ecRevP,ecRevY,ecRevD,ecInvG,ecInvT,ecVocC,ecVocI,ecPnlR,ecPnlP,ecPnlC,_charts=false;
   const won = v => { v=Number(v); return v>=1e8 ? (v/1e8).toFixed(1)+'억' : v>=1e4 ? Math.round(v/1e4).toLocaleString()+'만' : fmt(v); };
   function initCharts(){
     if(_charts) return; _charts=true;
@@ -305,11 +306,11 @@
     ecProd=echarts.init($('chart-prod')); ecRegion=echarts.init($('chart-region'));
     ecDow=echarts.init($('chart-dow'));
     ecFx=echarts.init($('chart-fx'));
-    ecRevM=echarts.init($('chart-revmonth')); ecRevC=echarts.init($('chart-revchan')); ecRevP=echarts.init($('chart-revprod')); ecRevY=echarts.init($('chart-revyear'));
+    ecRevM=echarts.init($('chart-revmonth')); ecRevC=echarts.init($('chart-revchan')); ecRevP=echarts.init($('chart-revprod')); ecRevY=echarts.init($('chart-revyear')); ecRevD=echarts.init($('chart-revday'));
     ecInvG=echarts.init($('chart-invgrp')); ecInvT=echarts.init($('chart-invtrend'));
     ecVocC=echarts.init($('chart-voccat')); ecVocI=echarts.init($('chart-vocissue'));
     ecPnlR=echarts.init($('chart-pnlrev')); ecPnlP=echarts.init($('chart-pnlpl')); ecPnlC=echarts.init($('chart-pnlcost'));
-    window.addEventListener('resize',()=>{[ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecFx,ecRevM,ecRevC,ecRevP,ecRevY,ecInvG,ecInvT,ecVocC,ecVocI,ecPnlR,ecPnlP,ecPnlC].forEach(c=>c&&c.resize());});
+    window.addEventListener('resize',()=>{[ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecFx,ecRevM,ecRevC,ecRevP,ecRevY,ecRevD,ecInvG,ecInvT,ecVocC,ecVocI,ecPnlR,ecPnlP,ecPnlC].forEach(c=>c&&c.resize());});
   }
   function renderCalMonth(ym, wrapId){
     wrapId = wrapId || 'calWrap';
@@ -417,7 +418,7 @@
     document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));
     const id=b.dataset.t;
     document.querySelectorAll('.tabpanel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+id));
-    setTimeout(()=>{ if(id==='revenue'){[ecRevM,ecRevC,ecRevP,ecRevY].forEach(c=>c&&c.resize());} if(id==='trend'){ecMonth&&ecMonth.resize();ecYoY&&ecYoY.resize();} if(id==='mix'){ecChan&&ecChan.resize();ecGrp&&ecGrp.resize();} if(id==='detail'){[ecProd,ecRegion,ecDow].forEach(c=>c&&c.resize());} if(id==='inventory'){[ecInvG,ecInvT].forEach(c=>c&&c.resize());} if(id==='voc'){[ecVocC,ecVocI].forEach(c=>c&&c.resize());} if(id==='pnl'){[ecPnlR,ecPnlP,ecPnlC].forEach(c=>c&&c.resize());} if(id==='fx'){ecFx&&ecFx.resize();} },30);
+    setTimeout(()=>{ if(id==='revenue'){[ecRevM,ecRevC,ecRevP,ecRevY,ecRevD].forEach(c=>c&&c.resize());} if(id==='trend'){ecMonth&&ecMonth.resize();ecYoY&&ecYoY.resize();} if(id==='mix'){ecChan&&ecChan.resize();ecGrp&&ecGrp.resize();} if(id==='detail'){[ecProd,ecRegion,ecDow].forEach(c=>c&&c.resize());} if(id==='inventory'){[ecInvG,ecInvT].forEach(c=>c&&c.resize());} if(id==='voc'){[ecVocC,ecVocI].forEach(c=>c&&c.resize());} if(id==='pnl'){[ecPnlR,ecPnlP,ecPnlC].forEach(c=>c&&c.resize());} if(id==='fx'){ecFx&&ecFx.resize();} },30);
     window.scrollTo({top:0,behavior:'smooth'});
   });
 
@@ -554,16 +555,34 @@
     try{
       const AX = DARK?'#8ea0bd':'#64748b';
       const rpal=['#ea580c','#2563eb','#0891b2','#7c3aed','#059669','#d97706','#64748b'];
-      const [rm,rc,rp]=await Promise.all([
+      const [rm,rc,rp,rd]=await Promise.all([
         sb.from('rev_month').select('*').order('ym'),
         sb.from('rev_channel').select('*').order('revenue',{ascending:false}),
         sb.from('rev_product').select('*').order('revenue',{ascending:false}),
+        sb.from('rev_day').select('*').order('d'),
       ]);
       if(rm.error||rc.error||rp.error||!rm.data) return;
       const M=rm.data, C=rc.data, P=rp.data;
       const total=M.reduce((s,r)=>s+Number(r.revenue),0), boxes=M.reduce((s,r)=>s+r.boxes,0);
       const peak=M.reduce((a,b)=>Number(b.revenue)>Number(a.revenue)?b:a,M[0]);
-      const kpi=[['총 매출(추정)',won(total)],['총 박스',fmt(boxes)+'박스'],['월평균 매출',won(Math.round(total/M.length))],['최고 매출월',peak.ym.slice(2)+' · '+won(Number(peak.revenue))]];
+      // 일자별 매출 (있으면 오늘/월 실적 KPI)
+      let kpi;
+      if(rd.data && rd.data.length){
+        const D=rd.data; const last=D[D.length-1];
+        const lastYm=last.d.slice(0,7);
+        const mtd=D.filter(r=>r.d.slice(0,7)===lastYm).reduce((s,r)=>s+Number(r.revenue),0);
+        const ytd=D.filter(r=>r.d.slice(0,4)===last.d.slice(0,4)).reduce((s,r)=>s+Number(r.revenue),0);
+        kpi=[['오늘 매출 ('+last.d.slice(5)+')',won(Number(last.revenue))],['이번달 누계',won(mtd)],['올해 누계',won(ytd)],['최고 매출월',peak.ym.slice(2)+' · '+won(Number(peak.revenue))]];
+        if(ecRevD){
+          const R30=D.slice(-30);
+          ecRevD.setOption({grid:{left:52,right:14,top:14,bottom:40},tooltip:{trigger:'axis',formatter:p=>p[0].axisValue+'<br>'+won(p[0].value)},
+            xAxis:{type:'category',data:R30.map(r=>r.d.slice(5)),axisLabel:{color:AX,fontSize:9,rotate:60},axisLine:{lineStyle:{color:SPLIT}}},
+            yAxis:{type:'value',axisLabel:{color:AX,formatter:v=>won(v)},splitLine:{lineStyle:{color:SPLIT}}},
+            series:[{type:'bar',data:R30.map((r,i)=>({value:Number(r.revenue),itemStyle:{color:i===R30.length-1?GO:GB,borderRadius:[4,4,0,0]}})),barWidth:'62%'}]});
+        }
+      } else {
+        kpi=[['총 매출(추정)',won(total)],['총 박스',fmt(boxes)+'박스'],['월평균 매출',won(Math.round(total/M.length))],['최고 매출월',peak.ym.slice(2)+' · '+won(Number(peak.revenue))]];
+      }
       $('revkpi').innerHTML=kpi.map(k=>'<div class="kpi"><div class="lab">'+k[0]+'</div><div class="val">'+k[1]+'</div></div>').join('');
       if(!ecRevM) return;
       ecRevM.setOption({grid:{left:58,right:18,top:16,bottom:46},tooltip:{trigger:'axis',formatter:p=>p[0].name+'<br>'+won(p[0].value)},xAxis:{type:'category',data:M.map(r=>r.ym.slice(2)),axisLabel:{color:AX,fontSize:10,rotate:45},axisLine:{lineStyle:{color:SPLIT}}},yAxis:{type:'value',axisLabel:{color:AX,formatter:v=>won(v)},splitLine:{lineStyle:{color:SPLIT}}},series:[{type:'bar',data:M.map(r=>Number(r.revenue)),itemStyle:{color:GO,borderRadius:[6,6,0,0]},barWidth:'58%'}]});
