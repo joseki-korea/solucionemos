@@ -233,7 +233,7 @@
 
   <section class="tabpanel" id="tab-fx">
     <div class="kpis" id="fxcards"></div>
-    <div class="panel"><h2>💱 원/달러 환율 추이 <span class="legend">최근 ~5개월 · ECB 시장환율</span></h2><div class="echart" id="chart-fx" style="height:330px"></div></div>
+    <div class="panel"><h2>💱 환율 추이 (원화 기준) <span class="legend">달러·파운드·유로 · 최근 ~5개월 · ECB 시장환율</span></h2><div class="echart" id="chart-fx" style="height:330px"></div></div>
     <div class="panel" style="margin-bottom:0"><h2>📦 수입 원가 영향</h2><div id="fxnote" style="font-size:13px;color:var(--sub);line-height:1.8">분석 중…</div></div>
   </section>
 
@@ -319,22 +319,28 @@
     try{
       const iso=d=>d.toISOString().slice(0,10);
       const to=new Date(), from=new Date(Date.now()-160*864e5);
-      const j=await (await fetch(`https://api.frankfurter.dev/v1/${iso(from)}..${iso(to)}?base=USD&symbols=KRW,CNY,JPY`)).json();
+      const j=await (await fetch(`https://api.frankfurter.dev/v1/${iso(from)}..${iso(to)}?base=USD&symbols=KRW,GBP,EUR`)).json();
       const ds=Object.keys(j.rates).sort(); if(ds.length<2) return;
       const L=ds[ds.length-1], P=ds[ds.length-2], R=j.rates;
-      const usd=R[L].KRW, usdP=R[P].KRW, cny=R[L].KRW/R[L].CNY, jpy=R[L].KRW/R[L].JPY*100, ch=(usd-usdP)/usdP;
+      const krwUSD=d=>R[d].KRW, krwGBP=d=>R[d].KRW/R[d].GBP, krwEUR=d=>R[d].KRW/R[d].EUR;
+      const usd=krwUSD(L), usdP=krwUSD(P), gbp=krwGBP(L), eur=krwEUR(L), ch=(usd-usdP)/usdP;
       const cls=v=>v>=0?'up':'down', sym=v=>v>=0?'▲':'▼';
       $('fxcards').innerHTML=[
         ['USD/KRW ($1)', Math.round(usd)+' 원', ch],
-        ['CNY/KRW (¥1)', cny.toFixed(1)+' 원', null],
-        ['JPY/KRW (100엔)', Math.round(jpy)+' 원', null],
+        ['GBP/KRW (£1)', Math.round(gbp)+' 원', null],
+        ['EUR/KRW (€1)', Math.round(eur)+' 원', null],
         ['기준일', L, null],
       ].map(k=>`<div class="kpi"><div class="lab">${k[0]}</div><div class="val">${k[1]}</div>${k[2]!=null?`<div class="delta ${cls(k[2])}">${sym(k[2])} ${(Math.abs(k[2])*100).toFixed(2)}% (전일比)</div>`:''}</div>`).join('');
       initCharts();
-      ecFx.setOption({grid:{left:58,right:20,top:16,bottom:30},tooltip:{trigger:'axis',formatter:p=>p[0].axisValue+'<br>'+Math.round(p[0].data)+'원'},
+      ecFx.setOption({grid:{left:58,right:20,top:28,bottom:30},tooltip:{trigger:'axis',formatter:p=>p[0].axisValue+'<br>'+p.map(s=>s.marker+s.seriesName+' '+Math.round(s.data)+'원').join('<br>')},
+        legend:{data:['달러(USD)','파운드(GBP)','유로(EUR)'],textStyle:{color:AX},top:0,right:0},
         xAxis:{type:'category',data:ds.map(d=>d.slice(5)),axisLabel:{color:AX,fontSize:9},axisLine:{lineStyle:{color:SPLIT}}},
         yAxis:{type:'value',scale:true,axisLabel:{color:AX,formatter:'{value}'},splitLine:{lineStyle:{color:SPLIT}}},
-        series:[{type:'line',data:ds.map(d=>R[d].KRW),smooth:true,symbol:'none',lineStyle:{color:'#3b82f6',width:2.5},areaStyle:{color:g('rgba(59,130,246,.28)','rgba(59,130,246,.01)')}}]});
+        series:[
+          {name:'달러(USD)',type:'line',data:ds.map(krwUSD),smooth:true,symbol:'none',lineStyle:{color:'#3b82f6',width:2.5},areaStyle:{color:g('rgba(59,130,246,.22)','rgba(59,130,246,.01)')}},
+          {name:'파운드(GBP)',type:'line',data:ds.map(krwGBP),smooth:true,symbol:'none',lineStyle:{color:'#a855f7',width:2.2}},
+          {name:'유로(EUR)',type:'line',data:ds.map(krwEUR),smooth:true,symbol:'none',lineStyle:{color:'#f59e0b',width:2.2}}
+        ]});
       $('fxnote').innerHTML = (ch>=0
         ? `📈 원/달러 <b style="color:#ef4444">상승(원화 약세)</b> → 수입 원물(과일·수산물·캔재료 등) <b>원가 부담 ↑</b>. 환헤지·구매시점 분산 검토.`
         : `📉 원/달러 <b style="color:#22c55e">하락(원화 강세)</b> → 수입 원가 <b>완화</b>. 원물 선구매·재고 확보 유리 구간.`)
