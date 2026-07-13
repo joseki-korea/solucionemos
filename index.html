@@ -160,6 +160,7 @@
     <button class="tab" data-t="mix">🏷️ 채널·품목</button>
     <button class="tab" data-t="detail">🔍 상세분석</button>
     <button class="tab" data-t="inventory">📦 재고</button>
+    <button class="tab" data-t="voc">🛡️ 품질·VOC</button>
     <button class="tab" data-t="fx">💱 환율</button>
     <button class="tab" data-t="news">📰 업계 브리핑</button>
     <button class="tab" data-t="store">🛒 스토어·리뷰</button>
@@ -218,6 +219,18 @@
     <div class="panel" style="margin-bottom:0"><h2>📋 품목별 재고 현황 <span class="legend">현재고순 · 상태별 색상</span></h2><div id="invTable" style="overflow-x:auto"></div></div>
   </section>
 
+  <section class="tabpanel" id="tab-voc">
+    <div class="kpis" id="vockpi"></div>
+    <div class="grid" style="margin-bottom:14px">
+      <div class="panel" style="margin-bottom:0"><h2>제품군별 VOC <span class="legend">클레임+문의 건수</span></h2><div class="echart" id="chart-voccat" style="height:320px"></div></div>
+      <div class="panel" style="margin-bottom:0"><h2>이슈 유형 <span class="legend">내용 자동 분류</span></h2><div class="echart" id="chart-vocissue" style="height:320px"></div></div>
+    </div>
+    <div class="panel" style="margin-bottom:0">
+      <h2>📋 VOC 접수·조치 내역 <span class="legend">2025-11~ · 개인정보 제외 · 품질팀 조치 포함</span></h2>
+      <div class="newslist" id="vocList"></div>
+    </div>
+  </section>
+
   <section class="tabpanel" id="tab-fx">
     <div class="kpis" id="fxcards"></div>
     <div class="panel"><h2>💱 원/달러 환율 추이 <span class="legend">최근 ~5개월 · ECB 시장환율</span></h2><div class="echart" id="chart-fx" style="height:330px"></div></div>
@@ -268,7 +281,7 @@
   const g = (c1,c2)=> new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:c1},{offset:1,color:c2}]);
   const GB=g('#60a5fa','#2563eb'), GO=g('#fb923c','#ea580c'), GC=g('#38bdf8','#0284c7');
 
-  let ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal,ecFx,ecRevM,ecRevC,ecRevP,ecInvG,ecInvT,_charts=false;
+  let ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecCal,ecFx,ecRevM,ecRevC,ecRevP,ecInvG,ecInvT,ecVocC,ecVocI,_charts=false;
   const won = v => { v=Number(v); return v>=1e8 ? (v/1e8).toFixed(1)+'억' : v>=1e4 ? Math.round(v/1e4).toLocaleString()+'만' : fmt(v); };
   function initCharts(){
     if(_charts) return; _charts=true;
@@ -279,7 +292,8 @@
     ecFx=echarts.init($('chart-fx'));
     ecRevM=echarts.init($('chart-revmonth')); ecRevC=echarts.init($('chart-revchan')); ecRevP=echarts.init($('chart-revprod'));
     ecInvG=echarts.init($('chart-invgrp')); ecInvT=echarts.init($('chart-invtrend'));
-    window.addEventListener('resize',()=>{[ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecFx,ecRevM,ecRevC,ecRevP,ecInvG,ecInvT].forEach(c=>c&&c.resize());});
+    ecVocC=echarts.init($('chart-voccat')); ecVocI=echarts.init($('chart-vocissue'));
+    window.addEventListener('resize',()=>{[ecMonth,ecYoY,ecChan,ecGrp,ecProd,ecRegion,ecDow,ecFx,ecRevM,ecRevC,ecRevP,ecInvG,ecInvT,ecVocC,ecVocI].forEach(c=>c&&c.resize());});
   }
   function renderCalMonth(ym){
     if(!window._cal) return;
@@ -377,7 +391,7 @@
     document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));
     const id=b.dataset.t;
     document.querySelectorAll('.tabpanel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+id));
-    setTimeout(()=>{ if(id==='revenue'){[ecRevM,ecRevC,ecRevP].forEach(c=>c&&c.resize());} if(id==='trend'){ecMonth&&ecMonth.resize();ecYoY&&ecYoY.resize();} if(id==='mix'){ecChan&&ecChan.resize();ecGrp&&ecGrp.resize();} if(id==='detail'){[ecProd,ecRegion,ecDow].forEach(c=>c&&c.resize());} if(id==='inventory'){[ecInvG,ecInvT].forEach(c=>c&&c.resize());} if(id==='fx'){ecFx&&ecFx.resize();} },30);
+    setTimeout(()=>{ if(id==='revenue'){[ecRevM,ecRevC,ecRevP].forEach(c=>c&&c.resize());} if(id==='trend'){ecMonth&&ecMonth.resize();ecYoY&&ecYoY.resize();} if(id==='mix'){ecChan&&ecChan.resize();ecGrp&&ecGrp.resize();} if(id==='detail'){[ecProd,ecRegion,ecDow].forEach(c=>c&&c.resize());} if(id==='inventory'){[ecInvG,ecInvT].forEach(c=>c&&c.resize());} if(id==='voc'){[ecVocC,ecVocI].forEach(c=>c&&c.resize());} if(id==='fx'){ecFx&&ecFx.resize();} },30);
     window.scrollTo({top:0,behavior:'smooth'});
   });
 
@@ -391,7 +405,7 @@
       ]);
       if(sum.error||chan.error||month.error||grp.error) throw (sum.error||chan.error||month.error||grp.error);
       render(sum.data, chan.data, month.data, grp.data);
-      loadNews(); loadDetail(); loadFx(); loadRevenue(); renderStore(); loadInventory();
+      loadNews(); loadDetail(); loadFx(); loadRevenue(); renderStore(); loadInventory(); loadVoc();
       $('err').style.display='none';
       $('updated').textContent = '최신 · ' + new Date().toLocaleTimeString('ko-KR');
     }catch(e){ $('err').style.display='block'; $('err').textContent='데이터 로드 오류: '+(e.message||e); }
@@ -574,6 +588,46 @@
       h+=rows.map(r=>'<tr style="border-bottom:1px solid var(--line)"><td style="text-align:left;padding:6px 8px">'+r.nm+'</td><td style="text-align:left;color:var(--sub)">'+(r.grp||'')+'</td><td style="text-align:right;padding:6px 8px;font-weight:700">'+fmt(r.cur)+'</td><td style="text-align:right;color:var(--sub)">'+fmt(r.outq)+'</td><td style="text-align:right;padding:6px 8px;font-weight:700;color:'+stColor(r.st||'')+'">'+(r.st||'')+'</td></tr>').join('');
       h+='</tbody></table>';
       $('invTable').innerHTML=h;
+    }catch(e){}
+  }
+  // ===== 품질·VOC (voc 테이블 · 개인정보 제외) =====
+  function vocIssue(t){
+    t=t||'';
+    if(/비닐|바늘|낚시|줄|벌레|머리카락|이물|플라스틱|마대|금속|녹|껍질/.test(t)) return '이물 혼입';
+    if(/냄새|이취|쩐내|비린|화학|기름|곰팡이|썩|변질/.test(t)) return '이취·변질';
+    if(/색상|색이|탁|끈적|점성|무늬|상태/.test(t)) return '색상·상태';
+    if(/괜찮|성분|영양|함유|왜 |어디|방문|중금속.*괜/.test(t)) return '성분 문의';
+    return '기타';
+  }
+  async function loadVoc(){
+    try{
+      const {data:V,error}=await sb.from('voc').select('*').order('dt',{ascending:false});
+      if(error||!V) return;
+      const claim=V.filter(x=>x.typ==='클레임').length, ask=V.filter(x=>x.typ==='문의').length;
+      const catCnt={}; V.forEach(x=>catCnt[x.cat]=(catCnt[x.cat]||0)+1);
+      const topCat=Object.entries(catCnt).sort((a,b)=>b[1]-a[1])[0];
+      const kpi=[['총 VOC',V.length+' 건'],['클레임',claim+' 건'],['문의',ask+' 건'],['최다 이슈',topCat?topCat[0]+' '+topCat[1]+'건':'-']];
+      $('vockpi').innerHTML=kpi.map((k,i)=>'<div class="kpi"><div class="lab">'+k[0]+'</div><div class="val"'+(i===1?' style="color:#ef4444"':'')+'>'+k[1]+'</div></div>').join('');
+      initCharts();
+      // 제품군별 VOC (가로 막대)
+      const CC=Object.entries(catCnt).sort((a,b)=>a[1]-b[1]);
+      ecVocC.setOption({grid:{left:88,right:44,top:8,bottom:20},tooltip:{trigger:'axis'},
+        xAxis:{type:'value',minInterval:1,axisLabel:{color:AX},splitLine:{lineStyle:{color:SPLIT}}},
+        yAxis:{type:'category',data:CC.map(x=>x[0]),axisLabel:{color:AX,fontSize:11},axisLine:{lineStyle:{color:SPLIT}}},
+        series:[{type:'bar',data:CC.map(x=>x[1]),itemStyle:{color:g('#f87171','#dc2626'),borderRadius:[0,8,8,0]},barWidth:'56%',label:{show:true,position:'right',color:AX,fontSize:11}}]});
+      // 이슈 유형 도넛
+      const iss={}; V.forEach(x=>{const k=vocIssue(x.voc); iss[k]=(iss[k]||0)+1;});
+      const ipal={'이물 혼입':'#ef4444','이취·변질':'#f97316','색상·상태':'#eab308','성분 문의':'#3b82f6','기타':'#64748b'};
+      ecVocI.setOption({tooltip:{trigger:'item',formatter:'{b}<br>{c}건 ({d}%)'},legend:{bottom:0,textStyle:{color:AX},icon:'circle'},
+        series:[{type:'pie',radius:['45%','72%'],center:['50%','44%'],itemStyle:{borderColor:DARK?'#141c2e':'#fff',borderWidth:3,borderRadius:6},
+          label:{color:AX,formatter:'{b}\n{d}%',fontSize:11},
+          data:Object.entries(iss).map(([k,v])=>({name:k,value:v,itemStyle:{color:ipal[k]||'#64748b'}}))}]});
+      // VOC 리스트
+      const tcol=t=>t==='클레임'?'danger':'op';
+      $('vocList').innerHTML=V.map(x=>{
+        const issue=vocIssue(x.voc);
+        return '<div class="nitem '+tcol(x.typ)+'"><span class="nchip">'+x.typ+' · '+issue+'</span><span class="ntitle">'+(x.product||x.cat)+' <span style="font-size:10.5px;color:var(--sub);font-weight:600">'+(x.dt||'')+' · '+(x.maker||'')+'</span></span><span class="nsum">'+x.voc+(x.action?'<br><b style="color:var(--good)">↳ 조치:</b> '+x.action:'')+'</span></div>';
+      }).join('');
     }catch(e){}
   }
   // ===== 지원사업 일정 (형님 목록으로 채움 — {date:'YYYY-MM-DD', title, agency, url}) =====
