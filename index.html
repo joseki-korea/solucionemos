@@ -71,6 +71,15 @@
   .chatin{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
   .chatin input{flex:1;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;font-family:inherit}
   .chatin button{background:var(--pri);color:#fff;border:none;border-radius:10px;padding:0 14px;font-weight:800;cursor:pointer}
+  .storegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
+  .scard{background:var(--bg);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+  .scard:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+  .scard .simg{width:100%;aspect-ratio:1;object-fit:cover;background:#fff}
+  .scard .sbody{padding:11px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .scard .snm{font-size:13px;font-weight:800;line-height:1.32}
+  .scard .sprice{font-size:12px;color:var(--sub);font-weight:700}
+  .scard .slink{margin-top:auto;font-size:12px;font-weight:800;color:#fff;background:#03c75a;text-align:center;padding:8px;border-radius:8px;text-decoration:none}
+  .scard .slink:hover{filter:brightness(1.08)}
   .exec{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(249,115,22,.10));border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px}
   .exec .eyebrow{font-size:11px;font-weight:800;color:var(--acc);letter-spacing:1px}
   .exec .headline{font-size:20px;font-weight:800;margin-top:6px;line-height:1.4;letter-spacing:-.3px}
@@ -148,6 +157,7 @@
     <button class="tab" data-t="detail">🔍 상세분석</button>
     <button class="tab" data-t="fx">💱 환율</button>
     <button class="tab" data-t="news">📰 업계 브리핑</button>
+    <button class="tab" data-t="store">🛒 스토어·리뷰</button>
   </nav>
   <div class="err" id="err"></div>
 
@@ -206,6 +216,13 @@
     <div class="panel">
       <h2>📰 <span id="briefListTitle">업계 브리핑</span> <span class="legend">식품·HACCP·수출·지원사업 · 필터 선택</span></h2>
       <div class="newslist" id="news"></div>
+    </div>
+  </section>
+
+  <section class="tabpanel" id="tab-store">
+    <div class="panel">
+      <h2>🛒 제품별 스토어·리뷰 <span class="legend">네이버 카탈로그 구매평·별점 바로가기</span></h2>
+      <div class="storegrid" id="storegrid"></div>
     </div>
   </section>
 
@@ -355,7 +372,7 @@
       ]);
       if(sum.error||chan.error||month.error||grp.error) throw (sum.error||chan.error||month.error||grp.error);
       render(sum.data, chan.data, month.data, grp.data);
-      loadNews(); loadDetail(); loadFx(); loadRevenue();
+      loadNews(); loadDetail(); loadFx(); loadRevenue(); renderStore();
       $('err').style.display='none';
       $('updated').textContent = '최신 · ' + new Date().toLocaleTimeString('ko-KR');
     }catch(e){ $('err').style.display='block'; $('err').textContent='데이터 로드 오류: '+(e.message||e); }
@@ -457,6 +474,19 @@
         levels:[{itemStyle:{gapWidth:4,borderRadius:8}}],
         data:GR.map((x,i)=>({name:x.grp,value:x.cnt,itemStyle:{color:tpal[i%tpal.length]}}))}]
     });
+  }
+  // ===== 제품별 스토어·리뷰 (네이버 카탈로그 = 구매평·별점) =====
+  const STORE=[
+    {name:'삼포 깐포도 400g', cat:'52038211620', price:'4,100원~', img:'https://shopping-phinf.pstatic.net/main_5203821/52038211620.20241220111404.jpg', tag:'SNS 화제'},
+    {name:'삼포 큰구슬 골뱅이', cat:'56987875749', price:'낱개 5천원대', img:'https://shopping-phinf.pstatic.net/main_5698787/56987875749.20260623070655.jpg', tag:'업소 1픽'},
+    {name:'삼포 황도 400g', cat:'58867559343', price:'550원~', img:'https://shopping-phinf.pstatic.net/main_5886755/58867559343.20260629070556.jpg'},
+    {name:'삼포 백도 슬라이스 400g', cat:'52485011702', price:'1,680원~', img:'https://shopping-phinf.pstatic.net/main_5248501/52485011702.20250114174454.jpg'},
+    {name:'삼포 애플망고 400g', cat:'52505464622', price:'2,000원~', img:'https://shopping-phinf.pstatic.net/main_5250546/52505464622.20250115140851.jpg'},
+    {name:'삼포 번데기탕 280g', cat:'56862258604', price:'1,270원~', img:'https://shopping-phinf.pstatic.net/main_5686225/56862258604.20260626071157.jpg'},
+  ];
+  function renderStore(){
+    if(!$('storegrid')) return;
+    $('storegrid').innerHTML=STORE.map(s=>`<div class="scard"><img class="simg" src="${s.img}" alt="${s.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'"><div class="sbody"><div class="snm">${s.name}${s.tag?` <span style="font-size:10px;color:var(--acc)">· ${s.tag}</span>`:''}</div><div class="sprice">최저 ${s.price}</div><a class="slink" href="https://search.shopping.naver.com/catalog/${s.cat}" target="_blank" rel="noopener">스토어·리뷰 보기 →</a></div></div>`).join('');
   }
   async function loadRevenue(){
     try{
