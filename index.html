@@ -11,9 +11,14 @@
     --bg:#0b1220; --panel:#141c2e; --line:#243149; --ink:#e8eef7; --sub:#8ea0bd;
     --pri:#3b82f6; --acc:#f97316; --good:#22c55e; --warn:#f59e0b; --danger:#ef4444; --op:#3b82f6;
   }
-  @media (prefers-color-scheme: light){
-    :root{ --bg:#f1f5f9; --panel:#ffffff; --line:#e2e8f0; --ink:#0f172a; --sub:#64748b; }
-  }
+  html[data-theme="light"]{ --bg:#eef2f6; --panel:#ffffff; --line:#e2e8f0; --ink:#0f172a; --sub:#64748b; --good:#16a34a; --warn:#d97706; --danger:#dc2626; }
+  html[data-theme="dark"]{ --bg:#0b1220; --panel:#141c2e; --line:#243149; --ink:#e8eef7; --sub:#8ea0bd; --good:#22c55e; --warn:#f59e0b; --danger:#ef4444; }
+  .aiw-badge{font-size:9px;font-weight:700;color:#fff;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+  .aiw-notice{background:#fef9c3;color:#713f12;font-size:11px;line-height:1.5;padding:8px 12px}
+  .aiw-notice b{color:#854d0e}
+  .aiw-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 11px 2px}
+  .aiw-chip{font-size:11px;font-weight:600;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:5px 11px;cursor:pointer;white-space:nowrap}
+  .aiw-chip:hover{border-color:var(--pri)}
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Malgun Gothic','맑은 고딕',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:18px;max-width:1200px;margin:0 auto}
   header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
@@ -150,7 +155,7 @@
       <h1>📊 정푸드코리아 · 발주 임원 대시보드</h1>
       <div class="sub">삼포 통조림 발주 통합 · 빠른 의사결정용</div>
     </div>
-    <div class="live"><span class="dot"></span><span id="updated">연결 중…</span><button class="logout" id="logoutBtn">로그아웃</button></div>
+    <div class="live"><span class="dot"></span><span id="updated">연결 중…</span><button class="logout" id="themeToggle">☀️ 라이트</button><button class="logout" id="logoutBtn">로그아웃</button></div>
   </header>
 
   <nav class="tabs" id="tabs">
@@ -277,8 +282,15 @@
 
   <button class="chatbtn" id="chatbtn" title="AI 도우미">💬</button>
   <div class="chatbox" id="chatbox">
-    <div class="chathead"><span>🤖 AI 도우미 · 내부용</span><button id="chatclose">✕</button></div>
+    <div class="chathead"><span>🤖 AI 도우미 · 내부용<span class="aiw-badge">Groq · Llama 3.3</span></span><button id="chatclose">✕</button></div>
+    <div class="aiw-notice">⚠️ <b>무료 AI(Groq)</b> · 사용량 <b>한도 있음</b>(초과 시 잠깐 멈춤·대기하면 복구) · 답변은 <b>참고용</b>, 중요 수치는 탭에서 확인 · 민감정보 입력 주의</div>
     <div class="chatlog" id="chatlog"></div>
+    <div class="aiw-chips">
+      <span class="aiw-chip" data-q="이번 달 발주 몇 건이야?">이번달 발주</span>
+      <span class="aiw-chip" data-q="채널별 매출 요약해줘">채널별 매출</span>
+      <span class="aiw-chip" data-q="재고 상위 품목군 알려줘">재고 현황</span>
+      <span class="aiw-chip" data-q="최근 VOC 클레임 정리해줘">최근 VOC</span>
+    </div>
     <div class="chatin"><input id="chatin" placeholder="무엇이든 물어보세요…" autocomplete="off"><button id="chatsend">↑</button></div>
   </div>
   </div>
@@ -844,10 +856,16 @@
     }
     $('chatsend').onclick=send;
     inp.addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+    document.querySelectorAll('.aiw-chip').forEach(c=>c.addEventListener('click',()=>{inp.value=c.dataset.q;send();}));
   })();
   $('loginBtn').addEventListener('click', doLogin);
   $('pw').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
   $('logoutBtn').addEventListener('click', ()=> sb.auth.signOut());
+  (function(){ var el=document.documentElement, b=$('themeToggle'), K='jfk-theme';
+    function ap(t){ el.setAttribute('data-theme',t); localStorage.setItem(K,t); if(b) b.textContent = t==='light' ? '🌙 다크' : '☀️ 라이트'; }
+    ap(localStorage.getItem(K)||'dark');
+    if(b) b.onclick=function(){ ap(el.getAttribute('data-theme')==='light'?'dark':'light'); };
+  })();
   sb.auth.onAuthStateChange((_e, s)=>{ s ? showApp() : showLogin(); });
   (async ()=>{ const {data:{session}}=await sb.auth.getSession(); session ? showApp() : showLogin(); })();
 </script>
