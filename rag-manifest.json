@@ -18,6 +18,17 @@
       "sha8": "9a4119ac"
     },
     {
+      "path": "assets/README.md",
+      "id": "joseki-korea-solucionemos/assets/README",
+      "doc_type": "asset-index",
+      "tags": [
+        "assets",
+        "overview"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "61fcf185"
+    },
+    {
       "path": "assets/binaries/README.md",
       "id": "joseki-korea-solucionemos/assets/binaries/README",
       "doc_type": "asset-index",
@@ -65,7 +76,20 @@
         "doc"
       ],
       "updated": "2026-11-07",
-      "sha8": "eabfa977"
+      "sha8": "a79928a3"
+    },
+    {
+      "path": "docs/README.md",
+      "id": "joseki-korea-solucionemos/docs/README",
+      "doc_type": "readme",
+      "tags": [
+        "docs",
+        "architecture",
+        "rules",
+        "roles"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "270408a8"
     },
     {
       "path": "docs/ROLES.md",
@@ -106,6 +130,40 @@
       ],
       "updated": "2026-11-07",
       "sha8": "8077b23d"
+    },
+    {
+      "path": "home/README.md",
+      "id": "joseki-korea-solucionemos/home/README",
+      "doc_type": "architecture",
+      "tags": [
+        "homepage",
+        "showcase"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "8230427d"
+    },
+    {
+      "path": "home/assets/README.md",
+      "id": "joseki-korea-solucionemos/home/assets/README",
+      "doc_type": "asset-index",
+      "tags": [
+        "homepage",
+        "images",
+        "assets"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "4750b3ce"
+    },
+    {
+      "path": "home/products/README.md",
+      "id": "joseki-korea-solucionemos/home/products/README",
+      "doc_type": "asset-index",
+      "tags": [
+        "products",
+        "catalog"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "b794f1fc"
     }
   ],
   "excluded": [

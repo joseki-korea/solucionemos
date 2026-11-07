@@ -20,6 +20,7 @@ source_of_truth: repo tree
 .
 ./README.md
 ./assets
+./assets/README.md
 ./assets/binaries
 ./assets/binaries/README.md
 ./assets/binaries/drive-manifest.json
@@ -32,13 +33,16 @@ source_of_truth: repo tree
 ./assets/src/README.md
 ./docs
 ./docs/ARCHITECTURE.md
+./docs/README.md
 ./docs/ROLES.md
 ./docs/RULES.md
 ./handoffs
 ./handoffs/README.md
 ./handoffs/_TEMPLATE.md
 ./home
+./home/README.md
 ./home/assets
+./home/assets/README.md
 ./home/assets/food_golbaengi.jpg
 ./home/assets/hero_cans.png
 ./home/assets/prod_mango.jpg
@@ -47,6 +51,7 @@ source_of_truth: repo tree
 ./home/mango.html
 ./home/products
 ./home/products.html
+./home/products/README.md
 ./home/products/깐포도.jpg
 ./home/products/백도.jpg
 ./home/products/애플망고.jpg
