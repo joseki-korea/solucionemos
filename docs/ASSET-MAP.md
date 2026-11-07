@@ -1,7 +1,7 @@
 ---
 id: solucionemos/docs/ASSET-MAP
 title: "Asset map"
-summary: "Existing files remain in place until reviewed and validated."
+summary: "Ten product images were moved to the product image inventory; page references were updated."
 domain: solucionemos
 tags: [repository, documentation, rag]
 owner: repository maintainers
@@ -20,17 +20,17 @@ source_of_truth: docs/ASSET-MAP.md
 
 # Asset map
 
-Existing files remain in place until reviewed and validated.
+Ten product images were moved to the product image inventory; page references were updated.
 
-- `home/assets/food_golbaengi.jpg` → classify under `assets/images/` or `assets/ui/` after reference review.
-- `home/assets/hero_cans.png` → classify under `assets/images/` or `assets/ui/` after reference review.
-- `home/assets/prod_mango.jpg` → classify under `assets/images/` or `assets/ui/` after reference review.
-- `home/assets/prod_peach.jpg` → classify under `assets/images/` or `assets/ui/` after reference review.
-- `home/products/깐포도.jpg` → classify under `assets/images/` or `assets/ui/` after reference review.
-- `home/products/백도.jpg` → classify under `assets/images/` or `assets/ui/` after reference review.
-- `home/products/애플망고.jpg` → classify under `assets/images/` or `assets/ui/` after reference review.
-- `home/products/자연산골뱅이.jpg` → classify under `assets/images/` or `assets/ui/` after reference review.
-- `home/products/큰구슬골뱅이.jpg` → classify under `assets/images/` or `assets/ui/` after reference review.
-- `home/products/황도.jpg` → classify under `assets/images/` or `assets/ui/` after reference review.
+- `assets/images/product/food-golbaengi.jpg` — moved.
+- `assets/images/product/hero-cans.png` — moved.
+- `assets/images/product/product-mango.jpg` — moved.
+- `assets/images/product/product-peach.jpg` — moved.
+- `assets/images/product/peeled-grapes.jpg` — moved.
+- `assets/images/product/white-peach.jpg` — moved.
+- `assets/images/product/apple-mango.jpg` — moved.
+- `assets/images/product/wild-whelk.jpg` — moved.
+- `assets/images/product/large-whelk.jpg` — moved.
+- `assets/images/product/yellow-peach.jpg` — moved.
 
-Target folders are categories, not instructions to move files without review.
+The site is served from the repository root by the assets configuration.
