@@ -76,7 +76,7 @@
         "doc"
       ],
       "updated": "2026-11-07",
-      "sha8": "fe897f50"
+      "sha8": "220d32dc"
     },
     {
       "path": "docs/README.md",
@@ -164,6 +164,18 @@
       ],
       "updated": "2026-11-07",
       "sha8": "b794f1fc"
+    },
+    {
+      "path": "assets/videos/README.md",
+      "id": "joseki-korea-solucionemos/assets/videos/README",
+      "doc_type": "asset-index",
+      "tags": [
+        "assets",
+        "videos",
+        "drive"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "1dfb6e49"
     }
   ],
   "excluded": [
@@ -174,6 +186,7 @@
     "*.ipynb",
     "node_modules/**",
     "dist/**",
-    "build/**"
+    "build/**",
+    "assets/videos/**"
   ]
 }

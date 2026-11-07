@@ -53,6 +53,14 @@ wrangler.toml
 ./assets/images/drive-manifest.json
 ./assets/src
 ./assets/src/README.md
+./assets/videos
+./assets/videos/README.md
+./assets/videos/drive-manifest.json
+./assets/src
+./assets/src/README.md
+./assets/videos
+./assets/videos/README.md
+./assets/videos/drive-manifest.json/README.md
 ./docs
 ./docs/ARCHITECTURE.md
 ./docs/README.md
