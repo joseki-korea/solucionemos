@@ -9,7 +9,8 @@ status: DRAFT
 updated: 2026-11-07
 source_of_truth: README.md
 ---
-
+- **GitHub Repository**: https://github.com/joseki-korea/solucionemos
+- **Google Drive Artifacts**: `Orca 산출물/프로젝트/solucionemos/` (pending upload)
 # 정푸드코리아 발주 임원 대시보드 및 회사 소개
 
 ## 프로젝트 설명

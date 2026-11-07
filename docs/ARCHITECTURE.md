@@ -40,7 +40,12 @@ Repo Standard 적용 후 목표 폴더 구조 (추적 대상 파일 기준, `__p
 
 ### 3.1. 루트 추적 및 설정 파일 (Tracked Root & App Config Files)
 - `.gitignore`
+- `AGENTS.md`
+- `ARCHITECTURE.md`
+- `CLAUDE.md`
+- `GEMINI.md`
 - `README.md`
+- `RULES.md`
 - `index.html`
 - `rag-manifest.json`
 - `wrangler.toml`
