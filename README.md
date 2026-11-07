@@ -20,7 +20,7 @@ source_of_truth: README.md
 
 GitHub: https://github.com/joseki-korea/solucionemos
 
-Drive: PENDING
+Drive: https://drive.google.com/drive/folders/1bDRqFuZhEjLz6spPF67olw_b_52NTdHR
 
 
 
