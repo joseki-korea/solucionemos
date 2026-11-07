@@ -1,6 +1,6 @@
 ---
 id: joseki-korea-solucionemos/docs/RULES
-title: 정푸드코리아 발주 임원 대시보드 및 회사 소개 — 규칙
+title: "정푸드코리아 발주 임원 대시보드 및 회사 소개 — 규칙"
 repo: joseki-korea-solucionemos
 device_scope: all
 doc_type: rules

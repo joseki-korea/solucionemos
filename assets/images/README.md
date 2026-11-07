@@ -1,6 +1,6 @@
 ---
 id: joseki-korea-solucionemos/assets/images/README
-title: 이미지 에셋
+title: "이미지 에셋"
 repo: joseki-korea-solucionemos
 device_scope: all
 doc_type: asset-index

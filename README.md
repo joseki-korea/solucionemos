@@ -1,6 +1,6 @@
 ---
 id: joseki-korea-solucionemos/README.md
-title: 정푸드코리아 발주 임원 대시보드 및 회사 소개 — 프로젝트 개요
+title: "정푸드코리아 발주 임원 대시보드 및 회사 소개 — 프로젝트 개요"
 repo: joseki-korea-solucionemos
 device_scope: all
 doc_type: readme

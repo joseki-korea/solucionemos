@@ -1,6 +1,6 @@
 ---
 id: joseki-korea-solucionemos/assets/binaries/README
-title: 바이너리 에셋
+title: "바이너리 에셋"
 repo: joseki-korea-solucionemos
 device_scope: all
 doc_type: asset-index
