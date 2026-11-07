@@ -1,0 +1,120 @@
+{
+  "schema_version": "0.1-DRAFT",
+  "repo": "joseki-korea-solucionemos",
+  "updated": "2026-11-07",
+  "docs": [
+    {
+      "path": "README.md",
+      "id": "joseki-korea-solucionemos/README.md",
+      "doc_type": "readme",
+      "tags": [
+        "dashboard",
+        "jungfoodkorea",
+        "cloudflare-pages",
+        "echarts",
+        "executive-dashboard"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "9a4119ac"
+    },
+    {
+      "path": "assets/binaries/README.md",
+      "id": "joseki-korea-solucionemos/assets/binaries/README",
+      "doc_type": "asset-index",
+      "tags": [
+        "doc"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "903c21a9"
+    },
+    {
+      "path": "assets/components/README.md",
+      "id": "joseki-korea-solucionemos/assets/components/README",
+      "doc_type": "asset-index",
+      "tags": [
+        "doc"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "ecec2109"
+    },
+    {
+      "path": "assets/images/README.md",
+      "id": "joseki-korea-solucionemos/assets/images/README",
+      "doc_type": "asset-index",
+      "tags": [
+        "doc"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "daed859b"
+    },
+    {
+      "path": "assets/src/README.md",
+      "id": "joseki-korea-solucionemos/assets/src/README",
+      "doc_type": "asset-index",
+      "tags": [
+        "doc"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "e7dfb858"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "id": "joseki-korea-solucionemos/docs/ARCHITECTURE",
+      "doc_type": "architecture",
+      "tags": [
+        "doc"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "c101f06a"
+    },
+    {
+      "path": "docs/ROLES.md",
+      "id": "joseki-korea-solucionemos/docs/ROLES",
+      "doc_type": "roles",
+      "tags": [
+        "doc"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "47aa5717"
+    },
+    {
+      "path": "docs/RULES.md",
+      "id": "joseki-korea-solucionemos/docs/RULES",
+      "doc_type": "rules",
+      "tags": [
+        "doc"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "b0194448"
+    },
+    {
+      "path": "handoffs/README.md",
+      "id": "joseki-korea-solucionemos/handoffs/README",
+      "doc_type": "handoff",
+      "tags": [
+        "doc"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "61172ed9"
+    },
+    {
+      "path": "handoffs/_TEMPLATE.md",
+      "id": "joseki-korea-solucionemos/handoffs/TEMPLATE",
+      "doc_type": "handoff",
+      "tags": [
+        "doc"
+      ],
+      "updated": "2026-11-07",
+      "sha8": "9a568128"
+    }
+  ],
+  "excluded": [
+    "assets/binaries/**",
+    "**/*.env",
+    "**/secrets/**",
+    "*.ipynb",
+    "node_modules/**",
+    "dist/**",
+    "build/**"
+  ]
+}
