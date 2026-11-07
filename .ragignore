@@ -1,0 +1,15 @@
+.git/
+node_modules/
+.venv/
+venv/
+dist/
+build/
+__pycache__/
+*.env
+*.key
+*.pem
+*.png
+*.jpg
+*.pdf
+!**/README.md
+!**/drive-manifest.json
