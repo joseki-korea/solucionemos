@@ -6,178 +6,218 @@
     {
       "path": "README.md",
       "id": "joseki-korea-solucionemos/README.md",
+      "title": "정푸드코리아 발주 임원 대시보드 및 회사 소개 — 프로젝트 개요",
       "doc_type": "readme",
       "tags": [
-        "readme",
-        "solucionemos"
+        "dashboard",
+        "jungfoodkorea",
+        "cloudflare-pages",
+        "echarts",
+        "executive-dashboard"
       ],
+      "status": "DRAFT",
       "updated": "2026-11-07",
       "sha8": "81b7d521"
     },
     {
-      "path": "home/README.md",
-      "id": "joseki-korea-solucionemos/home/README",
-      "doc_type": "architecture",
-      "tags": [
-        "architecture",
-        "solucionemos"
-      ],
-      "updated": "2026-11-07",
-      "sha8": "8230427d"
-    },
-    {
-      "path": "home/products/README.md",
-      "id": "joseki-korea-solucionemos/home/products/README",
+      "path": "assets/README.md",
+      "id": "joseki-korea-solucionemos/assets/README",
+      "title": "에셋 디렉터리 (assets/) — 개요",
       "doc_type": "asset-index",
       "tags": [
-        "asset-index",
-        "solucionemos"
+        "assets",
+        "overview"
       ],
+      "status": "DRAFT",
       "updated": "2026-11-07",
-      "sha8": "b794f1fc"
+      "sha8": "61fcf185"
     },
     {
-      "path": "home/assets/README.md",
-      "id": "joseki-korea-solucionemos/home/assets/README",
+      "path": "assets/binaries/README.md",
+      "id": "joseki-korea-solucionemos/assets/binaries/README",
+      "title": "바이너리 에셋",
       "doc_type": "asset-index",
       "tags": [
-        "asset-index",
-        "solucionemos"
+        "assets",
+        "binaries"
       ],
+      "status": "DRAFT",
       "updated": "2026-11-07",
-      "sha8": "4750b3ce"
+      "sha8": "4bba32df"
+    },
+    {
+      "path": "assets/components/README.md",
+      "id": "joseki-korea-solucionemos/assets/components/README",
+      "title": "컴포넌트 에셋",
+      "doc_type": "asset-index",
+      "tags": [
+        "assets",
+        "components"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-07",
+      "sha8": "f526d3ab"
+    },
+    {
+      "path": "assets/images/README.md",
+      "id": "joseki-korea-solucionemos/assets/images/README",
+      "title": "이미지 에셋",
+      "doc_type": "asset-index",
+      "tags": [
+        "assets",
+        "images"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-07",
+      "sha8": "027b0a29"
+    },
+    {
+      "path": "assets/src/README.md",
+      "id": "joseki-korea-solucionemos/assets/src/README",
+      "title": "소스코드 에셋",
+      "doc_type": "asset-index",
+      "tags": [
+        "assets",
+        "src"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-07",
+      "sha8": "30353341"
+    },
+    {
+      "path": "assets/videos/README.md",
+      "id": "joseki-korea-solucionemos/assets/videos/README",
+      "title": "비디오 에셋",
+      "doc_type": "asset-index",
+      "tags": [
+        "assets",
+        "videos",
+        "drive"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-07",
+      "sha8": "1dfb6e49"
     },
     {
       "path": "docs/ARCHITECTURE.md",
       "id": "solucionemos/docs/ARCHITECTURE.md",
+      "title": "Repository Architecture and Current->Target Migration Plan",
       "doc_type": "architecture",
       "tags": [
         "architecture",
-        "solucionemos"
+        "current-target-tree",
+        "migration-plan"
       ],
+      "status": "DRAFT",
       "updated": "2026-11-07",
       "sha8": "e4547e18"
     },
     {
       "path": "docs/README.md",
       "id": "joseki-korea-solucionemos/docs/README",
+      "title": "문서 모음 (docs/) — 개요",
       "doc_type": "readme",
       "tags": [
-        "readme",
-        "solucionemos"
+        "docs",
+        "architecture",
+        "rules",
+        "roles"
       ],
+      "status": "DRAFT",
       "updated": "2026-11-07",
       "sha8": "270408a8"
     },
     {
       "path": "docs/ROLES.md",
       "id": "joseki-korea-solucionemos/docs/ROLES",
+      "title": "정푸드코리아 발주 임원 대시보드 및 회사 소개 — 세션 역할",
       "doc_type": "roles",
       "tags": [
         "roles",
-        "solucionemos"
+        "sessions"
       ],
+      "status": "DRAFT",
       "updated": "2026-11-07",
       "sha8": "562b933c"
     },
     {
       "path": "docs/RULES.md",
       "id": "joseki-korea-solucionemos/docs/RULES",
+      "title": "정푸드코리아 발주 임원 대시보드 및 회사 소개 — 규칙",
       "doc_type": "rules",
       "tags": [
         "rules",
-        "solucionemos"
+        "safety"
       ],
+      "status": "DRAFT",
       "updated": "2026-11-07",
       "sha8": "e1c8e008"
     },
     {
-      "path": "assets/README.md",
-      "id": "joseki-korea-solucionemos/assets/README",
-      "doc_type": "asset-index",
-      "tags": [
-        "asset-index",
-        "solucionemos"
-      ],
-      "updated": "2026-11-07",
-      "sha8": "61fcf185"
-    },
-    {
-      "path": "assets/images/README.md",
-      "id": "joseki-korea-solucionemos/assets/images/README",
-      "doc_type": "asset-index",
-      "tags": [
-        "asset-index",
-        "solucionemos"
-      ],
-      "updated": "2026-11-07",
-      "sha8": "027b0a29"
-    },
-    {
-      "path": "assets/components/README.md",
-      "id": "joseki-korea-solucionemos/assets/components/README",
-      "doc_type": "asset-index",
-      "tags": [
-        "asset-index",
-        "solucionemos"
-      ],
-      "updated": "2026-11-07",
-      "sha8": "f526d3ab"
-    },
-    {
-      "path": "assets/videos/README.md",
-      "id": "joseki-korea-solucionemos/assets/videos/README",
-      "doc_type": "asset-index",
-      "tags": [
-        "asset-index",
-        "solucionemos"
-      ],
-      "updated": "2026-11-07",
-      "sha8": "1dfb6e49"
-    },
-    {
-      "path": "assets/binaries/README.md",
-      "id": "joseki-korea-solucionemos/assets/binaries/README",
-      "doc_type": "asset-index",
-      "tags": [
-        "asset-index",
-        "solucionemos"
-      ],
-      "updated": "2026-11-07",
-      "sha8": "4bba32df"
-    },
-    {
-      "path": "assets/src/README.md",
-      "id": "joseki-korea-solucionemos/assets/src/README",
-      "doc_type": "asset-index",
-      "tags": [
-        "asset-index",
-        "solucionemos"
-      ],
-      "updated": "2026-11-07",
-      "sha8": "30353341"
-    },
-    {
       "path": "handoffs/README.md",
       "id": "joseki-korea-solucionemos/handoffs/README",
+      "title": "핸드오프 폴더 안내",
       "doc_type": "handoff",
       "tags": [
         "handoff",
-        "solucionemos"
+        "sessions"
       ],
+      "status": "DRAFT",
       "updated": "2026-11-07",
       "sha8": "9cdc6817"
     },
     {
       "path": "handoffs/_TEMPLATE.md",
       "id": "joseki-korea-solucionemos/handoffs/TEMPLATE",
+      "title": "핸드오프 — TEMPLATE",
       "doc_type": "handoff",
       "tags": [
         "handoff",
-        "solucionemos"
+        "template"
       ],
+      "status": "DRAFT",
       "updated": "2026-11-07",
       "sha8": "8077b23d"
+    },
+    {
+      "path": "home/README.md",
+      "id": "joseki-korea-solucionemos/home/README",
+      "title": "소개 홈 (home/) — 안내",
+      "doc_type": "architecture",
+      "tags": [
+        "homepage",
+        "showcase"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-07",
+      "sha8": "8230427d"
+    },
+    {
+      "path": "home/assets/README.md",
+      "id": "joseki-korea-solucionemos/home/assets/README",
+      "title": "홈 정적 에셋 (home/assets/) — 안내",
+      "doc_type": "asset-index",
+      "tags": [
+        "homepage",
+        "images",
+        "assets"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-07",
+      "sha8": "4750b3ce"
+    },
+    {
+      "path": "home/products/README.md",
+      "id": "joseki-korea-solucionemos/home/products/README",
+      "title": "제품 상세 (home/products/) — 안내",
+      "doc_type": "asset-index",
+      "tags": [
+        "products",
+        "catalog"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-07",
+      "sha8": "b794f1fc"
     }
   ],
   "excluded_paths": [
