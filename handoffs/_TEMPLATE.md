@@ -1,21 +1,20 @@
 ---
-id: joseki-korea-solucionemos/handoffs/TEMPLATE
-title: 핸드오프 — TEMPLATE
-repo: joseki-korea-solucionemos
+id: "joseki-korea-solucionemos/handoffs/TEMPLATE"
+title: "핸드오프 — TEMPLATE"
+repo: "joseki-korea-solucionemos"
 device_scope: all
 doc_type: handoff
 tags: [handoff, template]
 status: DRAFT
 updated: 2026-11-07
 source_of_truth: handoffs/README.md
+session_id: "{SESSION4}"
+device: "{DEVICE}"
+date: "{YYYY-MM-DD}"
+handoff_status: OPEN
 ---
 
-session_id: SESSION4
-device: DEVICE
-date: YYYY-MM-DD
-handoff_status: OPEN
-
-# 핸드오프 — TOPIC
+# 핸드오프 — {{TOPIC}}
 
 ## 현재 상태
 

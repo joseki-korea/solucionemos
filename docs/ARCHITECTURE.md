@@ -18,15 +18,25 @@ source_of_truth: repo tree
 
 ```text
 .
+./README.md
 ./assets
 ./assets/binaries
+./assets/binaries/README.md
+./assets/binaries/drive-manifest.json
 ./assets/components
+./assets/components/README.md
 ./assets/images
+./assets/images/README.md
+./assets/images/drive-manifest.json
 ./assets/src
+./assets/src/README.md
 ./docs
+./docs/ARCHITECTURE.md
 ./docs/ROLES.md
 ./docs/RULES.md
 ./handoffs
+./handoffs/README.md
+./handoffs/_TEMPLATE.md
 ./home
 ./home/assets
 ./home/assets/food_golbaengi.jpg
@@ -44,6 +54,7 @@ source_of_truth: repo tree
 ./home/products/큰구슬골뱅이.jpg
 ./home/products/황도.jpg
 ./index.html
+./rag-manifest.json
 ./wrangler.toml
 ```
 
