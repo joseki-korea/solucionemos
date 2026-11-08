@@ -21,3 +21,9 @@ source_of_truth: AGENTS.md
 # Codex entry point
 
 Read [rules](RULES.md), [architecture](ARCHITECTURE.md), and [role](docs/agents/ROLE-codex.md) before work.
+
+## 멀티에이전트 문서 (핸드오프·정리·감시·훅)
+- 핸드오프 규칙: [docs/agents/handoffs/README.md](docs/agents/handoffs/README.md)
+- 정리 담당: [docs/agents/ROLE-janitor.md](docs/agents/ROLE-janitor.md)
+- 감시 담당: [docs/agents/ROLE-watchdog.md](docs/agents/ROLE-watchdog.md)
+- 훅 목록: [docs/agents/HOOKS.md](docs/agents/HOOKS.md)
