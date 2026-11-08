@@ -140,7 +140,7 @@
       "status": "DRAFT",
       "updated": "2026-11-08",
       "source_of_truth": "docs/RULES.md",
-      "sha8": "d981db2c"
+      "sha8": "ed4a1d79"
     },
     {
       "id": "joseki-korea-solucionemos/assets/README",
@@ -270,7 +270,7 @@
       "status": "DRAFT",
       "updated": "2026-11-08",
       "source_of_truth": "docs/ARCHITECTURE.md",
-      "sha8": "3f12d7e2"
+      "sha8": "259113e5"
     },
     {
       "id": "solucionemos/docs/ASSET-MAP.md",
@@ -358,7 +358,7 @@
       "status": "DRAFT",
       "updated": "2026-11-08",
       "source_of_truth": "docs/MODEL-SESSION-RULES.md",
-      "sha8": "0b7c6e8d"
+      "sha8": "7a8d2ebd"
     },
     {
       "id": "joseki-korea-solucionemos/docs/RULES",
@@ -374,7 +374,7 @@
       "status": "DRAFT",
       "updated": "2026-11-08",
       "source_of_truth": "vault main rules/INDEX.md",
-      "sha8": "d3ad0653"
+      "sha8": "dcf97699"
     },
     {
       "id": "solucionemos/docs/agents/README.md",

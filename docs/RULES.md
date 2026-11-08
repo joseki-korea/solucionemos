@@ -6,20 +6,11 @@ device_scope: all
 doc_type: rules
 tags: [rules, safety]
 status: DRAFT
-updated: "2026-11-08"
+updated: 2026-11-07
 source_of_truth: vault main rules/INDEX.md
 ---
 
 # 규칙
-
-## 규칙 상속 체계 (Rules Inheritance)
-
-- **GLOBAL (전역 정본)**: `solucionemos-vault/rules/INDEX.md` (Rule 00 · Rule 01 · Rule 02 · Rule 04).
-  - 본 레포지토리는 vault 전역 정본 규칙을 상속하며, 전역 규칙은 절대 복사하지 않고 포인터로만 참조합니다.
-  - 전역 규칙과 지역 규칙 충돌 시 **vault 전역 정본이 항상 우선**합니다.
-- **LOCAL (지역 규칙)**: 본 레포지토리 전용 개발, 빌드, 테스트 및 에셋 관리 규칙 (하단 정의).
-  - 지역 규칙은 전역 규칙을 보강(Add)할 수 있으나, 전역 규칙을 완화(Relax)하거나 배제할 수 없습니다.
-
 
 ## 정본 포인터
 
@@ -41,3 +32,12 @@ source_of_truth: vault main rules/INDEX.md
 
 - 완료 보고에는 경로·sha8·판정·건수를 포함한다. 실측과 추정을 구분한다.
 - 감사 기록·receipt는 append-only로 남긴다.
+
+## 규칙 상속 체계 (Rules Inheritance)
+
+- **GLOBAL (전역 정본)**:  (Rule 00 · Rule 01 · Rule 02 · Rule 04).
+  - 본 레포지토리는 vault 전역 정본 규칙을 상속하며, 전역 규칙은 절대 복사하지 않고 포인터로만 참조합니다.
+  - 전역 규칙과 지역 규칙 충돌 시 **vault 전역 정본이 항상 우선**합니다.
+- **LOCAL (지역 규칙)**: 본 레포지토리 전용 모델 배치 및 세션 운영 규칙 (하단 정의).
+  - 지역 규칙은 전역 규칙을 보강(Add)할 수 있으나, 전역 규칙을 완화(Relax)하거나 배제할 수 없습니다.
+  - 40% or >=1 auto-compaction → handoff to successor seat (no /clear), pointer to vault main rules/INDEX.md.

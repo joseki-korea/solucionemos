@@ -9,7 +9,7 @@ tags:
   - current-target-tree
   - migration-plan
 status: DRAFT
-updated: "2026-11-08"
+updated: '2026-11-07'
 source_of_truth: "docs/ARCHITECTURE.md"
 ---
 
@@ -44,8 +44,6 @@ Repo Standard 적용 후 목표 폴더 구조 (추적 대상 파일 기준, `__p
 - `ARCHITECTURE.md`
 - `CLAUDE.md`
 - `GEMINI.md`
-- `MODEL-SESSION-RULES.md`
-- `PM.md`
 - `README.md`
 - `RULES.md`
 - `index.html`
