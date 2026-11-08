@@ -18,11 +18,11 @@ source_of_truth: "docs/ARCHITECTURE.md"
 
 ## 1. 아키텍처 요약
 - **핵심 역할**: ㈜솔루시오네모스 공식 웹사이트 및 제품 소개 페이지.
-- **주요 구성**:
-  - `docs/`: 표준 규칙, 멀티에이전트 역할, 아키텍처 설계 및 마이그레이션 계획.
-  - `docs/agents/`: Claude, Codex Terra, Antigravity 에이전트별 전담 역할 및 행동 강령.
-  - `assets/`: 이미지, 바이너리, 비디오 및 UI 컴포넌트 관리.
-  - `handoffs/`: 세션 인수인계 기록 보관소.
+- **주요 구성 (Top-level directories)**:
+  - `assets/`: 이미지, 바이너리, 비디오 및 UI 컴포넌트 관리
+  - `docs/`: 표준 규칙, 멀티에이전트 역할, 아키텍처 설계 및 자산 맵
+  - `handoffs/`: 세션 인수인계 기록 보관소 (active/archive)
+  - `home/`: 웹사이트 정적 HTML, 스타일시트 및 제품 페이지 소스
 
 ## 2. 정본 문서 안내
 상세한 디렉토리 레이아웃, Current→Target 매핑, 시맨틱 재구성 설계 및 롤백 계획은 아래 정본 문서를 참고하십시오:

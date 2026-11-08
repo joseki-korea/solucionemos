@@ -9,3 +9,7 @@
 ## 2. 운영 지침
 - 작업 완료 후 구체적인 코드 실행 증거를 제시합니다.
 - 상세 역할 및 규칙: 👉 **[docs/agents/codex-role.md](docs/agents/codex-role.md)** · **[docs/agents/codex-rules.md](docs/agents/codex-rules.md)**
+
+## 규칙 상속 (전역 → 지역)
+
+전역 정본은 solucionemos-vault의 main 규칙 (`rules/INDEX.md`, Rule 00·01·02·04), `~/.claude/CLAUDE.md`, `~/orca/CLAUDE.md`이다. 지역 문서는 이 저장소의 `MODEL-SESSION-RULES.md`, `ROLES.md`, `PM.md`, `ARCHITECTURE.md`이며 저장소 맥락만 추가하고 전역 안전·승인 규칙을 완화할 수 없다.

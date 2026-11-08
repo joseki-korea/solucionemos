@@ -10,3 +10,7 @@
 ## 2. 작업 위임 지침
 - 모든 실제 소스코드 구현 및 시스템 작업은 **Codex Terra** 또는 **Antigravity** 작업 세션으로 위임합니다.
 - 상세 역할 및 규칙: 👉 **[docs/agents/claude-role.md](docs/agents/claude-role.md)** · **[docs/agents/claude-rules.md](docs/agents/claude-rules.md)**
+
+## 규칙 상속 (전역 → 지역)
+
+전역 정본은 solucionemos-vault의 main 규칙 (`rules/INDEX.md`, Rule 00·01·02·04), `~/.claude/CLAUDE.md`, `~/orca/CLAUDE.md`이다. 지역 문서는 이 저장소의 `MODEL-SESSION-RULES.md`, `ROLES.md`, `PM.md`, `ARCHITECTURE.md`이며 저장소 맥락만 추가하고 전역 안전·승인 규칙을 완화할 수 없다.
