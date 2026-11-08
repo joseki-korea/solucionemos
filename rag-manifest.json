@@ -1,0 +1,349 @@
+{
+  "documents": [
+    {
+      "path": ".github/README.md",
+      "id": "solucionemos/.github/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "5dafd5b9"
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "id": "solucionemos/.github/pull_request_template",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "4c7aa6d1"
+    },
+    {
+      "path": "AGENTS.md",
+      "id": "solucionemos/AGENTS",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "64710df7"
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "id": "solucionemos/ARCHITECTURE",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "6b28a705"
+    },
+    {
+      "path": "CLAUDE.md",
+      "id": "solucionemos/CLAUDE",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "a38439ce"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "id": "solucionemos/CONTRIBUTING",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "b69dedb0"
+    },
+    {
+      "path": "GEMINI.md",
+      "id": "solucionemos/GEMINI",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "a463731f"
+    },
+    {
+      "path": "RAG.md",
+      "id": "solucionemos/RAG",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "bc8fe45f"
+    },
+    {
+      "path": "README.md",
+      "id": "solucionemos/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "b40d55ea"
+    },
+    {
+      "path": "RULES.md",
+      "id": "solucionemos/RULES",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "eb44f3ba"
+    },
+    {
+      "path": "assets/MANIFEST.md",
+      "id": "solucionemos/assets/MANIFEST",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "24c3f95c"
+    },
+    {
+      "path": "assets/README.md",
+      "id": "solucionemos/assets/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "933fc292"
+    },
+    {
+      "path": "assets/images/README.md",
+      "id": "solucionemos/assets/images/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "d35951d6"
+    },
+    {
+      "path": "assets/images/brand/README.md",
+      "id": "solucionemos/assets/images/brand/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "2f7ecd43"
+    },
+    {
+      "path": "assets/images/diagrams/README.md",
+      "id": "solucionemos/assets/images/diagrams/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "d25f22a7"
+    },
+    {
+      "path": "assets/images/photos/README.md",
+      "id": "solucionemos/assets/images/photos/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "50b7bf1a"
+    },
+    {
+      "path": "assets/images/product/README.md",
+      "id": "solucionemos/assets/images/product/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "1ac71e0e"
+    },
+    {
+      "path": "assets/images/screenshots/README.md",
+      "id": "solucionemos/assets/images/screenshots/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "418c2a23"
+    },
+    {
+      "path": "assets/ui/README.md",
+      "id": "solucionemos/assets/ui/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "e6bbed2e"
+    },
+    {
+      "path": "assets/ui/components/README.md",
+      "id": "solucionemos/assets/ui/components/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "d583da0d"
+    },
+    {
+      "path": "assets/ui/icons/README.md",
+      "id": "solucionemos/assets/ui/icons/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "4cec319a"
+    },
+    {
+      "path": "assets/ui/mockups/README.md",
+      "id": "solucionemos/assets/ui/mockups/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "a4edde51"
+    },
+    {
+      "path": "assets/ui/tokens/README.md",
+      "id": "solucionemos/assets/ui/tokens/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "374be9fd"
+    },
+    {
+      "path": "docs/ASSET-MAP.md",
+      "id": "solucionemos/docs/ASSET-MAP",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "aefef1c9"
+    },
+    {
+      "path": "docs/README.md",
+      "id": "solucionemos/docs/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "2f0e7c49"
+    },
+    {
+      "path": "docs/agents/README.md",
+      "id": "solucionemos/docs/agents/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "aa574b52"
+    },
+    {
+      "path": "docs/agents/ROLE-antigravity.md",
+      "id": "solucionemos/docs/agents/ROLE-antigravity",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "283c4047"
+    },
+    {
+      "path": "docs/agents/ROLE-claude.md",
+      "id": "solucionemos/docs/agents/ROLE-claude",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "199671d0"
+    },
+    {
+      "path": "docs/agents/ROLE-codex.md",
+      "id": "solucionemos/docs/agents/ROLE-codex",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "005392eb"
+    },
+    {
+      "path": "docs/glossary.md",
+      "id": "solucionemos/docs/glossary",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "a63f2ae3"
+    },
+    {
+      "path": "home/README.md",
+      "id": "solucionemos/home/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "8ed41585"
+    },
+    {
+      "path": "home/assets/README.md",
+      "id": "solucionemos/home/assets/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "0fb694cf"
+    },
+    {
+      "path": "home/products/README.md",
+      "id": "solucionemos/home/products/README",
+      "doc_type": "documentation",
+      "tags": [
+        "repository"
+      ],
+      "updated": "2026-11-08",
+      "sha8": "8a144d24"
+    }
+  ],
+  "exclude": [
+    ".git/",
+    "node_modules/",
+    ".venv/",
+    "dist/",
+    "build/",
+    "*.env",
+    "*.key",
+    "*.pem",
+    "binary assets"
+  ],
+  "reinclude": [
+    "**/README.md",
+    "**/drive-manifest.json"
+  ]
+}
