@@ -8,17 +8,26 @@ tags:
   - "rules"
   - "pointer"
 status: "DRAFT"
-updated: "2026-11-07"
+updated: "2026-11-08"
 source_of_truth: "docs/RULES.md"
 ---
 
 # Repository Global Rules — solucionemos
 
+## 규칙 상속 체계 (Rules Inheritance)
+
+- **GLOBAL (전역 정본)**: `solucionemos-vault/rules/INDEX.md` (Rule 00 · Rule 01 · Rule 02 · Rule 04).
+  - 본 레포지토리는 vault 전역 정본 규칙을 상속하며, 전역 규칙은 절대 복사하지 않고 포인터로만 참조합니다.
+  - 전역 규칙과 지역 규칙 충돌 시 **vault 전역 정본이 항상 우선**합니다.
+- **LOCAL (지역 규칙)**: 본 레포지토리 전용 개발, 빌드, 테스트 및 에셋 관리 규칙 (하단 정의).
+  - 지역 규칙은 전역 규칙을 보강(Add)할 수 있으나, 전역 규칙을 완화(Relax)하거나 배제할 수 없습니다.
+
+
 본 문서는 `joseki-korea/solucionemos` 레포지토리 전역에서 준수해야 할 개발 및 세션 운영 규칙 포인터입니다.
 
 ## 1. 핵심 전역 규칙 요약
 1. **기획 우선 및 설계 검토 통과 원칙**: 사전 승인 없는 임의 파일 이동(`git mv`) 및 파괴적 변경 절대 금지.
-2. **세션 위생 및 30% 핸드오프**: 컨텍스트 30% 도달 시 `handoffs/`에 인수인계 기록 작성 후 정리.
+2. **세션 위생 및 30% 핸드오프**: 컨텍스트 40% 도달 시 `handoffs/`에 인수인계 기록 작성 후 정리.
 3. **비밀정보 보호 (Zero Secret Leaks)**: API 키, 토큰, 환경변수 파일(.env)의 커밋 절대 금지.
 4. **엄격한 다중 에이전트 검증**: Strict Mode 90점 이상 획득 시에만 배포/머지 단계 진입.
 

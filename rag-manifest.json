@@ -2,9 +2,9 @@
   "manifest_version": "1.0.0",
   "version": "1.0.0",
   "repo": "joseki-korea/solucionemos",
-  "updated": "2026-11-07",
+  "updated": "2026-11-08",
   "device_scope": "all",
-  "total_documents": 30,
+  "total_documents": 34,
   "documents": [
     {
       "id": "solucionemos/AGENTS.md",
@@ -19,7 +19,7 @@
         "worker"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/agents/codex-role.md",
       "sha8": "941403f5"
     },
@@ -52,7 +52,7 @@
         "control"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/agents/claude-role.md",
       "sha8": "4d46322f"
     },
@@ -69,9 +69,43 @@
         "worker"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/agents/antigravity-role.md",
       "sha8": "240860e6"
+    },
+    {
+      "id": "solucionemos/MODEL-SESSION-RULES.md",
+      "title": "Model Session Rules Pointer",
+      "path": "MODEL-SESSION-RULES.md",
+      "repo": "joseki-korea/solucionemos",
+      "device_scope": "all",
+      "doc_type": "rules",
+      "tags": [
+        "rules",
+        "models",
+        "pointer"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/MODEL-SESSION-RULES.md",
+      "sha8": "e8c0a7af"
+    },
+    {
+      "id": "solucionemos/PM.md",
+      "title": "Project Management Session Pointer",
+      "path": "PM.md",
+      "repo": "joseki-korea/solucionemos",
+      "device_scope": "all",
+      "doc_type": "roles",
+      "tags": [
+        "pm",
+        "roles",
+        "pointer"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/PM.md",
+      "sha8": "254635ad"
     },
     {
       "id": "joseki-korea-solucionemos/README.md",
@@ -104,9 +138,9 @@
         "pointer"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/RULES.md",
-      "sha8": "b118bacb"
+      "sha8": "d981db2c"
     },
     {
       "id": "joseki-korea-solucionemos/assets/README",
@@ -234,9 +268,9 @@
         "migration-plan"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/ARCHITECTURE.md",
-      "sha8": "259113e5"
+      "sha8": "3f12d7e2"
     },
     {
       "id": "solucionemos/docs/ASSET-MAP.md",
@@ -254,6 +288,42 @@
       "updated": "2026-11-07",
       "source_of_truth": "docs/ASSET-MAP.md",
       "sha8": "8cc4ca36"
+    },
+    {
+      "id": "solucionemos/docs/MODEL-SESSION-RULES.md",
+      "title": "Model Session Rules and Operational Placement",
+      "path": "docs/MODEL-SESSION-RULES.md",
+      "repo": "joseki-korea/solucionemos",
+      "device_scope": "all",
+      "doc_type": "rules",
+      "tags": [
+        "rules",
+        "models",
+        "sessions",
+        "orchestration"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/MODEL-SESSION-RULES.md",
+      "sha8": "1c6e465f"
+    },
+    {
+      "id": "solucionemos/docs/PM.md",
+      "title": "Project Management Session Operational Scope",
+      "path": "docs/PM.md",
+      "repo": "joseki-korea/solucionemos",
+      "device_scope": "all",
+      "doc_type": "roles",
+      "tags": [
+        "pm",
+        "roles",
+        "governance",
+        "wbs"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/PM.md",
+      "sha8": "946bdde3"
     },
     {
       "id": "joseki-korea-solucionemos/docs/README",
@@ -274,20 +344,21 @@
       "sha8": "270408a8"
     },
     {
-      "id": "joseki-korea-solucionemos/docs/ROLES",
-      "title": "정푸드코리아 발주 임원 대시보드 및 회사 소개 — 세션 역할",
+      "id": "solucionemos/docs/ROLES.md",
+      "title": "Repository Roles and Model Assignments",
       "path": "docs/ROLES.md",
       "repo": "joseki-korea/solucionemos",
       "device_scope": "all",
       "doc_type": "roles",
       "tags": [
         "roles",
-        "sessions"
+        "sessions",
+        "model-placement"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
-      "source_of_truth": "vault main rules/INDEX.md (Rule 01)",
-      "sha8": "562b933c"
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/MODEL-SESSION-RULES.md",
+      "sha8": "10c72957"
     },
     {
       "id": "joseki-korea-solucionemos/docs/RULES",
@@ -301,9 +372,9 @@
         "safety"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "vault main rules/INDEX.md",
-      "sha8": "e1c8e008"
+      "sha8": "d3ad0653"
     },
     {
       "id": "solucionemos/docs/agents/README.md",
@@ -519,7 +590,7 @@
         "worker"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/agents/codex-role.md",
       "sha8": "941403f5"
     },
@@ -552,7 +623,7 @@
         "control"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/agents/claude-role.md",
       "sha8": "4d46322f"
     },
@@ -569,9 +640,43 @@
         "worker"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/agents/antigravity-role.md",
       "sha8": "240860e6"
+    },
+    {
+      "id": "solucionemos/MODEL-SESSION-RULES.md",
+      "title": "Model Session Rules Pointer",
+      "path": "MODEL-SESSION-RULES.md",
+      "repo": "joseki-korea/solucionemos",
+      "device_scope": "all",
+      "doc_type": "rules",
+      "tags": [
+        "rules",
+        "models",
+        "pointer"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/MODEL-SESSION-RULES.md",
+      "sha8": "e8c0a7af"
+    },
+    {
+      "id": "solucionemos/PM.md",
+      "title": "Project Management Session Pointer",
+      "path": "PM.md",
+      "repo": "joseki-korea/solucionemos",
+      "device_scope": "all",
+      "doc_type": "roles",
+      "tags": [
+        "pm",
+        "roles",
+        "pointer"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/PM.md",
+      "sha8": "254635ad"
     },
     {
       "id": "joseki-korea-solucionemos/README.md",
@@ -604,9 +709,9 @@
         "pointer"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/RULES.md",
-      "sha8": "b118bacb"
+      "sha8": "d981db2c"
     },
     {
       "id": "joseki-korea-solucionemos/assets/README",
@@ -734,9 +839,9 @@
         "migration-plan"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "docs/ARCHITECTURE.md",
-      "sha8": "259113e5"
+      "sha8": "3f12d7e2"
     },
     {
       "id": "solucionemos/docs/ASSET-MAP.md",
@@ -754,6 +859,42 @@
       "updated": "2026-11-07",
       "source_of_truth": "docs/ASSET-MAP.md",
       "sha8": "8cc4ca36"
+    },
+    {
+      "id": "solucionemos/docs/MODEL-SESSION-RULES.md",
+      "title": "Model Session Rules and Operational Placement",
+      "path": "docs/MODEL-SESSION-RULES.md",
+      "repo": "joseki-korea/solucionemos",
+      "device_scope": "all",
+      "doc_type": "rules",
+      "tags": [
+        "rules",
+        "models",
+        "sessions",
+        "orchestration"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/MODEL-SESSION-RULES.md",
+      "sha8": "1c6e465f"
+    },
+    {
+      "id": "solucionemos/docs/PM.md",
+      "title": "Project Management Session Operational Scope",
+      "path": "docs/PM.md",
+      "repo": "joseki-korea/solucionemos",
+      "device_scope": "all",
+      "doc_type": "roles",
+      "tags": [
+        "pm",
+        "roles",
+        "governance",
+        "wbs"
+      ],
+      "status": "DRAFT",
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/PM.md",
+      "sha8": "946bdde3"
     },
     {
       "id": "joseki-korea-solucionemos/docs/README",
@@ -774,20 +915,21 @@
       "sha8": "270408a8"
     },
     {
-      "id": "joseki-korea-solucionemos/docs/ROLES",
-      "title": "정푸드코리아 발주 임원 대시보드 및 회사 소개 — 세션 역할",
+      "id": "solucionemos/docs/ROLES.md",
+      "title": "Repository Roles and Model Assignments",
       "path": "docs/ROLES.md",
       "repo": "joseki-korea/solucionemos",
       "device_scope": "all",
       "doc_type": "roles",
       "tags": [
         "roles",
-        "sessions"
+        "sessions",
+        "model-placement"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
-      "source_of_truth": "vault main rules/INDEX.md (Rule 01)",
-      "sha8": "562b933c"
+      "updated": "2026-11-08",
+      "source_of_truth": "docs/MODEL-SESSION-RULES.md",
+      "sha8": "10c72957"
     },
     {
       "id": "joseki-korea-solucionemos/docs/RULES",
@@ -801,9 +943,9 @@
         "safety"
       ],
       "status": "DRAFT",
-      "updated": "2026-11-07",
+      "updated": "2026-11-08",
       "source_of_truth": "vault main rules/INDEX.md",
-      "sha8": "e1c8e008"
+      "sha8": "d3ad0653"
     },
     {
       "id": "solucionemos/docs/agents/README.md",
