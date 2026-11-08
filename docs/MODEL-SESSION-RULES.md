@@ -56,7 +56,7 @@ device4-session4-model-role
 - **실제 명명 예시**:
   - `gqfk-48f7-agy-worker`
   - `96r0-567a-opus55-control`
-  - `gqfk-b1fe-haiku-lookup`
+  - `gqfk-b1fe-terra-main`
   - `nwkw-0879-terra-worker`
 
 ## 3. 컨텍스트 과적 방지 및 후속 인계 (Context Overload & Handoff)

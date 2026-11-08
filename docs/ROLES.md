@@ -38,6 +38,6 @@ Claude는 관제, 기획 및 모니터링 전용 세션입니다. 비즈니스 �
 ## 3. 세션 명명 및 인계 규칙
 
 - **세션 명명**: `device4-session4-model-role` (하이픈 구분, 괄호 금지).
-  - 예: `gqfk-48f7-agy-worker`, `96r0-567a-opus55-control`, `gqfk-b1fe-haiku-lookup`, `nwkw-0879-terra-worker`
+  - 예: `gqfk-48f7-agy-worker`, `96r0-567a-opus55-control`, `gqfk-b1fe-terra-main`, `nwkw-0879-terra-worker`
 - **컨텍스트 인계**: 40% 임계치 도달 시 `handoffs/`에 인계서를 작성하고 후속 세션(v2)으로 전환합니다 (NO `/clear`).
 - **권한 모드**: 모든 자율 작업 세션은 바이패스 모드(Bypass-only)로 동작하여 파이프라인 중단을 배제합니다.
